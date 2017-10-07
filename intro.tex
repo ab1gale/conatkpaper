@@ -1,0 +1,370 @@
+\section{Introduction} \label{sec:intro}
+
+%P1: Concurrency bugs are harmful and pervasive. 
+Multithreaded programs are already prevalent. However, despite much effort, 
+these programs are still notoriously difficult to get right. Concurrency bugs 
+(\ie, shared memory accesses without proper synchronization among threads) in 
+these programs have led to severe consequences, including memory corruption, 
+wrong outputs, and program crashes~\cite{lu:concurrency-bugs}. 
+
+%P2: Just like sequential bugs may lead to security exploits, concurrency
+% bugs can also be exploited by attackers. Key question: have concurrency
+% attacks occured? 
+Worse, a prior study~\cite{con:hotpar12} shows that many real-world 
+concurrency bugs can lead to \emph{concurrency attacks}: once a concurrency bug 
+is triggered, attackers can leverage the memory corrupted by this bug to 
+construct various violations, including privilege 
+escalations~\cite{uselib-bug-12791, mysql-bug-24988}, malicious code 
+injections~\cite{berend-jan-wever-msiexploit}, and bypassing security 
+authentications~\cite{xwindows,theotheriphone,theotheriphone-2011}. For 
+instance, a data race~\cite{uselib-bug-12791} in the Linux kernel corrupted the 
+kernel's memory management subsystem and led to a root privilege 
+escalation. This study also elaborates that, because 
+concurrency attacks are caused by concurrent, miscellaneous memory accesses, 
+they can weaken most traditional defense techniques (\eg, 
+TOCTOU~\cite{toctou:usec03,toctou:fast05,toctou:fast08}). However, this study 
+did not provide exploit scripts to trigger these attacks, nor it quantitatively 
+evaluated existing tools on these attacks.
+% (see \S\ref{sec:related}).
+% These concurrency attacks are caused by 
+% corrupted general memory access, thus they are much broader and more difficult 
+% to track than traditional TOCTOU attacks caused by illegal file access. 
+% Moreover, concurrency attacks can weaken or completely bypass most existing 
+% sequential defence techniques.
+
+This paper presents the first quantitative study on the severity of concurrency 
+attacks. We studied \nprog widely used programs, including 3 server 
+programs, 2 browsers, 1 library, and 4 kernel distributions, in CVE 
+and their own bug databases. Our study reveals \nattacks concurrency attacks 
+that consist of three more types of violations than the prior 
+study~\cite{con:hotpar12}, including HTML integrity 
+violations (\S\ref{sec:unknown-attacks}), buffer overflows 
+(\S\ref{sec:example}), and DoS attacks (\S\ref{sec:unknown-attacks}). We 
+built scripts to successfully exploit \nreproduced attacks, and we 
+quantitatively studied these attacks with their input patterns, bug patterns in 
+code (if available), and the efficacy of existing detection tools. 
+
+% Present a summary of our real 
+% world study and types of vulnerabilities. Key point: 
+
+%P3: Concurrency attacks have diverse consequences consequences. 
+Our study makes four new findings. First, concurrency attacks are much 
+more severe than concurrency bugs. Specifically, once concurrency attacks 
+succeed, fixing only concurrency bugs in code won't help, 
+because attackers may have 
+broken in~\cite{freebsd-exploit-2009-3527,uselib-bug-12791,mysql-bug-24988}. 
+This 
+finding suggests that analyzing the known, fixed concurrency bugs is still 
+crucial, because they may have led to concurrency attacks that remain latent.
+
+% % P3.1: third, bugs and attacks are spread across functions. So we do
+% inter-procedural analysis. TBD: not sure whether this reason is strong.
+Second, unlike previous observations in consequence analysis
+tools~\cite{conseq:asplos11, li:hpca07, gu:dsn03} that software bugs are often 
+close to their failure/error sites (\eg, bugs and failures are within the same 
+function), our study shows that 12 out of 27 concurrency attacks are widely 
+spread across different functions from their bugs. Therefore, these consequence 
+analysis tools may be insufficient to detect such concurrency attacks.
+% In our study, \nreproducedInter out of \nreproduced attacks happen in
+% different functions from their bugs. 
+
+% The fourth finding: good news.
+Third, although concurrency attacks can cause miscellaneous consequences, 
+these consequences are triggered by several explicit types of vulnerable sites 
+(\eg, \v{setuid()}). Moreover, although concurrency bugs and and their attack 
+sites spread across different functions, at runtime, the bugs and their attacks 
+often share similar call stack prefixes (\S\ref{sec:patterns}). This finding 
+reveals an opportunity to build a precise, scalable static analysis tool for 
+tracking the bug-to-attack propagation.
+
+Fourth, concurrency bugs and their attacks can often be easily triggered with 
+different, subtle program inputs. Consider only the inputs to trigger 
+concurrency bugs, \nreproducedNoRetry out of the \nreproduced triggered 
+attacks required less than 20 repetitive executions via subtle inputs. This 
+finding not only contradicts traditional understanding 
+(\eg,~\cite{pres:sosp09,cui:tern:osdi10}) that concurrency bugs are difficult 
+to trigger in native executions and require tremendous retrials, but it also 
+implies that these attacks can easily bypass existing anomaly detection 
+tools~\cite{schonberg:pldi89,taskrecycling:ppopp90,diduce:icse02}.
+
+% Moreover, separate inputs for bugs and their attacks.
+Moreover, triggering concurrency bugs and their attacks often need different 
+inputs. In a Linux root privilege escalation~\cite{uselib-bug-12791}, although 
+triggering the data race only required calling the \uselib and \mmap system 
+calls, other system calls were also needed to get the root shell. This finding 
+poses a significant issue to existing concurrency tools, including model 
+checking tools (\eg, Chess~\cite{musuvathi:chess:osdi08}), because they are 
+designed only to catch the race on one input and have no clue on its security 
+consequence that needs another input.
+
+%P4: Overlooked by the community. 
+To precisely quantify the efficacy of existing concurrency detection tools on 
+concurrency attacks, we selected two popular dynamic data 
+race detectors \tsan~\cite{tsan:wbia09} and \ski~\cite{ski:osdi14}, 
+and we made \nreproducedProgs studied programs run with these tools. We found 
+that most of the tools' reports were benign races, and all the concurrency 
+bugs that can lead to the \nreproduced concurrency attacks we found have been 
+deeply buried in these tools' reports. Our evaluation found 
+\reducerate of race reports benign (\S\ref{sec:reduce}).
+
+
+
+% We then believe a key reason 
+% concurrency attacks are missed is that detecting them with existing tools is 
+% just like finding needles in a haystack.
+% We believe one key reason is that the excessive amount of bug reports deeply 
+% burry concurrency attacks.
+
+%% TBD: emphasis inputs and thread interleavings.
+Two main reasons make these race detectors ineffective. First, only an 
+extremely small portion of program inputs can lead to concurrency bugs and 
+their 
+attacks. Because race detectors are clueless on even which input will lead to 
+a harmful bug (vulnerable bugs are just a subset of harmful bugs), these 
+detectors can only blindly flag bug reports driven by 
+testing workloads and search ``in the dark". 
+
+Second, even if a bug-triggering input is identified, a program may still run 
+into too many thread interleavings (or \emph{schedules}), depending on 
+runtime effects (\eg, hardware timings) and synchronization implementations 
+(\eg, adhoc synchronizations~\cite{syncfinder:osdi10}). Only a very small portion of 
+schedules will trigger the bug, while the rest may generate excessive, benign 
+reports. For instance, we ran \mysql with \tsan and repeatedly generated the 
+same bug-triggering SQL query~\cite{mysql-bug-24988}. We got 
+\nmysqlDetectedSameReq race reports, but after our manual inspection, only two 
+reports will lead to attacks (\S\ref{sec:study}); most benign reports were 
+caused by \mysql's adhoc synchronizations or benign schedules. In sum, the 
+excessive inputs and schedules caused excessive reports and buried real bugs and 
+attacks.
+
+% TBD: must define one-shot analysis: input + schedule --> detection result
+% Or we just say these techniques do blind search for attacks.
+It's challenging for existing analysis techniques to accurately 
+pinpoint the potentially vulnerable inputs and schedules. One common 
+technique to detect software bugs is static analysis because it can 
+throughly analyze program code and identify what branch statements may be 
+controlled by inputs and may lead to bugs. However, because it lacks runtime 
+effects such as which inputs may take which side of a branch statement, static 
+analysis will typically generate many more false reports than the two 
+dynamic race detectors we ran.
+
+
+
+% Symbolic execution is an alternative technique to 
+% precisely pinpoint bug triggering inputs because it carries input conditions by 
+% going along both sides of branches, however, symbolic execution is impractical 
+% to large programs as adding one branch will double the number of program paths. 
+% Overall, these existing one-shot analysis techniques are insufficient to cope 
+% with concurrency attacks.
+
+Our key insight is that the reports from existing detectors have implied 
+moderate hints on what inputs and schedules will likely lead to attacks and 
+what will not (\eg, benign bugs). We identify two types of hints. The first 
+hint is \emph{benign schedules}. For instance, the benign reports caused by 
+adhoc synchronizations have already implied how these synchronizations act 
+and how they work out schedules. Therefore, we can use static 
+analysis to extract these synchronizations from the reports, automatically 
+annotate these synchronizations in a program, then we can greatly prune out 
+these benign schedules and their reports. Our analysis automatically identified
+\nadhocsync unique static adhoc synchronizations (\S\ref{sec:reduce}).
+
+The second hint is the \emph{bug-to-attack propagations}, which imply 
+vulnerable inputs. Our study found that most vulnerable races are 
+already included in the race detectors' reports (\S\ref{sec:findings}), and 
+concurrency attacks sites are often explicit in program code 
+(\S\ref{sec:patterns}). Therefore, we can perform static analysis on only the 
+data and control flow propagations between the bug reports and the potential 
+attack sites, then we can collect relevant call stacks and branch statements as 
+the potentially vulnerable input hints.
+
+We did not make this vulnerable input hint automatically generate concrete
+inputs (can be done via symbolic execution~\cite{klee:osdi08,ucklee:usec15}), 
+because we found the call stacks and branches in hints are already expressive 
+enough for us to manually infer vulnerable inputs (\S\ref{sec:example}). This 
+input hint helped us identify subtle inputs to trigger both known and 
+unknown attacks (\S\ref{sec:unknown-attacks}).
+
+% hint isOur evaluation shows that these 
+% collected statements helped us find subtle inputs requirements (\eg, a
+% particular flag to be set during the invokation of a Linux system call)
+% in order to successfully trigger concurrency attacks.
+
+
+
+% TBD: multi-shot anslysis: input + schedule --> result --> refined input + 
+% schedule --> more precise result.
+
+% To cope with thread schedules, model checking is one advanced technique that 
+% can systematically explore schedules of a program and try to find buggy ones 
+% that trigger bugs. However, a program typically has exponentially many 
+% schedules even on a single input, thus model checking i
+
+% We then believe a key reason 
+% concurrency attacks are missed is that detecting them with existing tools is 
+% just like finding needles in a haystack.
+
+% TBD: add symbolic execution as one static analysis tool.
+% Addressing this key reason is extremely challenging because we need to identify 
+% concurrency bugs that may lead to attacks with good \emph{accuracy} 
+% and \emph{scalability}. For instance, one may use static analysis 
+% techniques (\eg,~\cite{relay:fse07, sosp:derive}) because they can thoroughly 
+% analyze all functions and program paths to find bugs. However, because static 
+% analyses lack dynamic information (\eg, functions being executed), they are 
+% notoriously inaccurate: they either may have too many false positives (flagging 
+% unreal reports~\cite{relay:fse07}) or may have too many false negatives 
+% (missing real ones~\cite{sosp:derive}). Worse, to ensure reasonable accuracy, 
+% static analyses are even more difficult to scale to large programs because 
+% these programs typically have too many functions and program 
+% paths~\cite{woodpecker:asplos13}. For instance, adding an \v{if} statement in 
+% code will double the number of program paths.
+
+% An alternative may be dynamic analysis 
+% techniques (\eg,~\cite{pres:sosp09,odr:sosp09}) because they can accurately 
+% identify bugs and their attacks with dynamic information collected at runtime, 
+% but these techniques can analyze only the executed program path. If 
+% a concurrency bug's attack requires a slightly different input to trigger in 
+% another program path, dynamic techniques will likely miss it.
+
+% Insight for the first challenge.
+% Our key insight is that each concurrency bug only affects a limited portion of 
+% functions and program paths. Intuitively, after a concurrency bug is triggered, 
+% other than global memory access, the memory corrupted by this bug should mainly 
+% propagate within current function, or from current function to 
+% callees/callers through arguments, or propagate to callers through return 
+% values of current function. Thus, we can skip analyzing many other parts of the 
+% program code that do not comply with some critical dynamic information (\eg, 
+% call stacks) in a bug report. Our real-world study confirmed this insight: most 
+% concurrency attacks share similar call stack prefixes with their triggering 
+% concurrency bugs.
+
+
+%P5: Our paper tool.
+% We implemented this new directed concurrency attack approach in \xxx. XXX: Rui 
+% add description. Emphasis that we have a verifier.
+
+% , an 
+% analysis framework that implements the directed concurrency attack detection 
+% approach. \xxx first leverages dynamic concurrency bug detection tools to 
+% generate bug reports with necessary dynamic information (\eg, call stacks of 
+% each bug), it then provides four simple, general false positive filters to prune 
+% the likely benign reports. It finally runs our static analyzer to perform 
+% inter-procedural (inter-functional) 
+% analysis to track the tainted data and control flows: if the flows hit a 
+% potential vulnerability site, our analyzer will generate a vulnerability report
+% including this site.
+
+% At a conceptual level, \xxx leverages dynamic information to ``direct" static 
+% analysis toward the functions and program paths affected by each bug. 
+% Therefore, \xxx can achieve much better scalability and accuracy than existing 
+% techniques. Compared to static analyses, \xxx only needs to analyze many fewer 
+% functions and program paths \wrt the dynamic information (improve scalability 
+% and reduce false positives). Compared to dynamic analyses, \xxx can greatly 
+% increase the amount of analyzed functions and program paths (reduce false 
+% negatives).
+
+%P6: Two key challenges for the tool to be accurate and scalable.
+% There are two key challenges to make this tool practical. First, we have to 
+% make it scalable to large applications. 
+
+
+
+%P7: Second challenge, no need insight. Simple and practical hints.
+% The second challenge is that we need general, automatic techniques to filter 
+% out benign races so that developers can focus on a much smaller amount of 
+% reports. We develop three practical filters for both applications and Linux 
+% kernels.
+
+%P8: Implementation. One tool, work for both kernels and applications.
+In sum, by directing concurrency bug detectors to focus on the 
+potentially vulnerable inputs and schedules, we can greatly 
+augment existing detectors to approach and detect concurrency attacks. 
+We implemented this directed concurrency attack detection approach in \xxx. It 
+first runs concurrency bug detectors on a program to generate reports, and it
+extracts benign schedule hints (\eg, adhoc synchronizations) and 
+vulnerable input hints from the reports with static analysis. It then 
+automatically annotates the benign schedule hints in a program's code, greatly 
+reducing benign schedules and thus their reports. Finally, it directs detectors 
+and its own runtime vulnerability verifiers (\S\ref{sec:arch}) to work on 
+the remaining, likely vulnerable inputs and schedules.
+
+% in 
+% Linux with five components as shown in Figure~\ref{fig:arch}. The first part is the
+% dynamic race detector, which takes program executables, inputs and generates 
+% potential race reports. \xxx leverages a popular race detector 
+% \tsan~\cite{tsan:wbia09} for user land applications and \ski~\cite{ski:osdi14} 
+% for Linux kernels. The second part is our static customized synchronization
+% detector, which detects adhoc synchronizations and feeds them back to race detector
+% in order to reduce the vulnerable schedule space.
+% The third component is our dynamic race verifier. It dynamically verifies data
+% races with no false positives. This component actually pinpoint and verifies
+% the relevant vulnerable schedule. The fourth part is our static vulnerability analyzer
+% built on top of the LLVM compiler framework~\cite{llvm}, which conducts a
+% static forward impact analysis.
+% The fifth part is our dynamic vulnerability verifier which further verifies the
+% vulnerability provided by our vulnerability analyzer and shed lights on generating
+% vulnerable inputs. This part requires users interaction. \xxx's main contribution
+% lies within the above mentioned components except the first one.
+
+%We have implemented four filters: 1) 
+%duplicate call stack filter, 2) semaphore-style ad-hoc synchronization filter, 
+%3) bit operation filter, and 4) self-implemented synchronization filter. These 
+%filters are sufficient to reduce most false positives in our evaluation.
+% These filters are integrated together with the first and the second part.
+
+
+%P9: Evaluation summary. Key to mention: \xxx helped us identify the crafted
+% inputs to trigger concurrency attacks easily.
+We evaluated \xxx on \nreproducedProgs diverse, widely used programs, including 
+\apache, \chrome, \libsafe, Linux kernel, \mysql, and \ssdb. \xxx's benign 
+schedule hints and runtime verifiers reduced \reducerate of the race 
+reports, and it did not miss the evaluated concurrency attacks. With the 
+greatly reduced reports, \xxx's vulnerable input hints helped us identify 
+subtle vulnerable inputs, leading to the detection of \nknownVul known 
+concurrency attacks as well as \nunknownVul previous unknown, severe ones in 
+\ssdb and \apache. The analysis performance of \xxx was reasonable for in-house 
+testing.
+
+% All our study results, exploit scripts, and \xxx 
+% source code with raw evaluation results are available at \github.
+
+%P10: Contributions. Our tool: help analyze the behavior of concurrency attacks.
+% Our study and tool: promote study on concurrency attacks. Our tool and
+% filters are good for other concurrency bugs as well.
+This paper makes two major contributions: 
+
+\begin{tightenum}
+
+\item \textbf{A first quantitative study on concurrency attacks} and their 
+implications on detection tools. This study will motivate and guide researchers 
+to develop new tools to detect and defend against concurrency 
+attacks (\S\ref{sec:study}).
+
+\item \textbf{A new directed concurrency attack detection approach} and its 
+implementation, \xxx. \xxx can be applied in existing security tools to bridge 
+the gap between concurrency bugs and their security consequences 
+(\S\ref{sec:apps}).
+% \xxx effectively detected \nknownVul known concurrency 
+% attacks in widely used programs and \nunknownVul previous unknown ones. 
+
+\end{tightenum}
+
+%P11:
+The rest of this paper is structured as follows.  \S\ref{sec:background} 
+introduces concurrency attack background, and \S\ref{sec:study} 
+presents our quantitative study. \S\ref{sec:overview} 
+gives an overview of our \xxx framework. \S\ref{sec:schedule-reduction} 
+describes \xxx's schedule reduction 
+and \S\ref{sec:input-reduction} its input reduction techniques. 
+% \S\ref{sec:impl} presents implementation details of our filters, and 
+\S\ref{sec:discuss} discusses \xxx's limitations and broad applications. 
+\S\ref{sec:evaluation} presents our evaluation results for \xxx, 
+\S\ref{sec:related} discusses related work, and \S\ref{sec:conclusion}
+concludes. 
+
+% Multithreaded programs are difficult to write, test, and debug.  A key
+% reason is nondeterminism: different runs of a multithreaded
+% program may show different behaviors, depending on how the threads
+% interleave~\cite{lee06}.
+% We term the interleaved executions of threads a schedule.
+
+

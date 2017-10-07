@@ -1,0 +1,4 @@
+#!/bin/bash
+for x in `seq 1 10000`
+do wget localhost:8000/asdasdasdasdasdasdasdasdasdasda
+done;

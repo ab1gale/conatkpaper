@@ -1,0 +1,4 @@
+---- Ctrl Dependent Vulnerability----
+[ 632 ]
+%632:   br      %631 if.end13 if.then11  (intercept.c:164)
+Vulnerable Site Location: (intercept.c:165)

@@ -1,0 +1,46 @@
+\it Just like bugs in single-threaded programs can lead to vulnerabilities, 
+bugs in multithreaded programs can also lead to concurrency attacks. 
+Unfortunately, there is little quantitative data on how well existing tools 
+can detect these attacks. This paper presents the first quantitative study 
+on concurrency attacks and their implications on tools. Our study on 
+\nprog widely used programs reveals \nattacks concurrency attacks with 
+broad threats (\eg, OS privilege escalation), and we built scripts to 
+successfully exploit \nreproduced attacks. Our study further reveals that, only 
+extremely small portions of inputs and thread interleavings (or 
+schedules) can trigger these attacks, and existing concurrency bug detectors 
+work poorly because they lack help to identify the vulnerable inputs and 
+schedules.
+
+% Although existing 
+% concurrency bug detection tools can detect the vulnerable concurrency bugs, the 
+% excessive reports of these tools bury the bugs and their attacks.
+
+% Even if people hit the vulnerable reports by 
+% luck, these reports only have the bugs' structual patterns (\eg, thread 
+% interleavings), but have no idication on whether these bugs may lead to 
+% concurrency attacks.
+
+Our key insight is that the reports in existing detectors have implied 
+moderate hints on what inputs and schedules will likely lead to attacks and 
+what will not (\eg, benign bug reports). With this insight, this paper presents 
+a new directed concurrency attack detection approach and its 
+implementation, \xxx. It extracts hints from the reports with static 
+analysis, augments existing detectors by pruning out the benign inputs and 
+schedules, and then directs detectors and its own runtime vulnerability 
+verifiers to work on the remaining, likely vulnerable inputs and schedules.
+
+Evaluation shows that \xxx reduced \reducerate reports caused by benign inputs 
+or schedules and detected \nknownVul known concurrency attacks. \xxx also 
+detected \nunknownVul previously unknown concurrency attacks, including a 
+use-after-free attack in \ssdb, and an integer overflow and HTML integrity 
+violation in \apache. All \xxx source code, exploit scripts, and results 
+are available at \github.
+
+% This paper presents \xxx, an analysis framework to detect concurrency 
+% attacks. \xxx first runs concurrency bug detection tools to generate bug 
+% reports, it then provides four types of general filters to prune the benign 
+% reports, and it finally runs our analysis tool to indicate whether the remaining 
+% reports may lead to concurrency attacks. \xxx's analysis tool achieves 
+% reasonable scalability and accuracy, two difficult program analysis 
+% challenges, by leveraging bugs' dynamic information (\eg, call stacks) to 
+% direct static analysis toward vulnerable program paths.

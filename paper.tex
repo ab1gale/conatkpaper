@@ -1,0 +1,418 @@
+\documentclass[letterpaper,twocolumn,10pt]{article}
+\usepackage{usenix}
+\usepackage[boxed, ruled, noline, noend]{algorithm2e}
+\usepackage[letterpaper,left=0.75in,right=0.75in,top=1in,bottom=1in]{geometry}
+\usepackage[small,compact]{titlesec}
+\usepackage{etoolbox}
+
+\makeatletter
+\patchcmd{\ttlh@hang}{\parindent\z@}{\parindent\z@\leavevmode}{}{}
+\patchcmd{\ttlh@hang}{\noindent}{}{}{}
+\makeatother
+\usepackage[font={small,bf}]{caption}    % added 9/10/13
+\usepackage[nolineno,noindent,norules]{lgrind}
+\usepackage{tightenum}
+\usepackage{float}
+\usepackage{xspace}
+\usepackage{times,pifont}
+\usepackage{mathptmx}
+\usepackage{subfig,graphics,graphicx,color}
+\usepackage{multirow}
+\usepackage{dblfloatfix} %% correctly orders single- and double-col figures
+\usepackage{hyphenat}
+\usepackage{mathrsfs}
+\usepackage{subfig}
+\usepackage{amssymb,amsmath,centernot}
+\usepackage{lastpage}
+\usepackage{flushend}
+\usepackage{hhline}
+\usepackage{authblk}
+\usepackage{pifont}
+\usepackage{listings}
+\usepackage[hyphens]{url}
+\usepackage{booktabs}
+%\newcommand{\doi}{XXXXXX}
+
+
+%%% ================= START of SOSP '13 template ================= 
+% \makeatletter
+% 
+% \def\ftype@copyrightbox{8}
+% \def\@copyrightspace{
+% \@float{copyrightbox}[b]
+% \begin{center}
+% \setlength{\unitlength}{1pc}
+% \begin{picture}(20,6.0) 
+% \put(0,3){\parbox{\columnwidth}{\scriptsize
+% 
+% %*** SAMPLE. AUTHOR PUT SUPPLIED TEXT HERE ****
+% 
+% \noindent
+% \rule{6.0 cm}{0.2pt}\\
+% Permissiondddd to make digital or hard copies of part or all of this work 
+% for personal or classroom use is granted without fee provided that
+% copies are not made or distributed for profit or commercial advantage 
+% and that copies bear this notice and the full citation on the first
+% page. Copyrights for third-party components of this work must be
+% honored.  For all other uses, contact the Owner/Author. 
+% 
+% \vspace{\baselineskip}\noindent
+% Copyright is held by the Owner/Author(s).\\
+% \textit{SOSP'15}.\\
+% ACM XXXXXXX.
+% 
+% \noindent
+% http://dx.doi.org/\doi}
+% }
+% \end{picture}
+% \end{center}
+% \end@float}
+% 
+% \def\maketitle{\par
+%  \begingroup
+%    \def\thefootnote{\fnsymbol{footnote}}
+%    \def\@makefnmark{\hbox
+%        to 0pt{$^{\@thefnmark}$\hss}}
+%      \twocolumn[\@maketitle]
+% \@thanks
+%  \endgroup
+%  \setcounter{footnote}{0}
+%  \let\maketitle\relax
+%  \let\@maketitle\relax
+%  \gdef\@thanks{}\gdef\@author{}\gdef\@title{}\gdef\@subtitle{}\let\thanks\relax
+%  \@copyrightspace}
+% 
+% \makeatother
+
+%%% ================= END of SOSP '13 template ================= 
+
+
+
+%\newcommand{\comment}[1]{}
+\frenchspacing
+
+%\doublespacing
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%     macro
+
+\newcommand{\xxx}[0]{\textsc{Owl}\xspace}
+\newcommand{\paxos}[0]{\textsc{Paxos}\xspace}
+\newcommand{\mytitle}[0]{\textbf {Understanding and Detecting Concurrency 
+Attacks}}
+\newcommand{\mykeywords}[0]{State Machine Replication, Fault Tolerance, Stable 
+and Deterministic Multithreading, Software Reliability}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% hyperref stuff
+
+%\usepackage[square,comma,numbers,sort]{natbib}
+\usepackage{hypernat}
+\usepackage{hyperref}
+
+%% fill in pdf info here
+\hypersetup{%
+colorlinks=false,
+pdfborder={0 0 0},
+pdftitle={\mytitle},
+pdfkeywords={\mykeywords},
+bookmarksnumbered,
+pdfstartview={FitH},
+urlcolor=cyan,
+pdfpagelabels=true,
+pdfdisplaydoctitle=true,
+}%
+
+%\usepackage{breakurl}
+%\usepackage[all]{hypcap}
+%\renewcommand{\url}{\burl}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Some NICE fonts
+
+\newfont{\BIG}{cminch}                             %--- One-inch font
+\newfont{\sfbHuge}{cmssbx10 scaled\magstep5}       %-- 25pt sans serif bold
+\newfont{\sfbLarger}{cmssbx10 scaled\magstep3}   %-- 12+pt sans serif boldd
+\newfont{\sfblarger}{cmssbx10 scaled\magstep2}   %-- 12+pt sans serif bold
+\newfont{\sfblarge}{cmssbx10 scaled\magstep1}      %-- 12pt sans serif bold
+\newfont{\sfbeleven}{cmssbx10 scaled\magstephalf}  %-- 11pt sans serif bold
+\newfont{\sfb}{cmssbx10}                           %-- 10pt sans serif bold
+\newfont{\sfeight}{cmss8}                          %-- 8pt sans serif
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+%    space tweaking
+
+%\textwidth = 6.5 in
+%\textheight = 9.0 in
+%\setlength{\topmargin}{-.5in}
+
+%\headheight = 0.0 in
+%\headsep = 0.0 in
+%\parskip = 0.2in
+%\parindent = 0.0in
+
+\renewcommand{\topfraction}{0.95}
+%\addtolength{\textfloatsep}{-0.1in}
+%\addtolength{\floatsep}{0.025in}
+\renewcommand\floatpagefraction{.9}
+%\renewcommand\bottomfraction{.9}
+\renewcommand\textfraction{.1}
+
+\setlength{\parindent}{9pt}
+
+% Rescue
+\makeatletter
+\def\v#1{{\mbox{\fontfamily{cmtt}\fontsize{\f@size}{\f@size}\selectfont #1}}}
+
+\newcommand{\cmark}{\ding{51}}%
+\newcommand{\xmark}{\ding{55}}%
+
+
+\newcommand{\dmt}[0]{DMT\xspace}
+\newcommand{\smt}[0]{StableMT\xspace}
+\newcommand{\smr}[0]{SMR\xspace}
+
+\newcommand{\tsan}[0]{\textsc{TSan}\xspace}
+\newcommand{\valgrind}[0]{\textsc{Valgrind}\xspace}
+\newcommand{\ski}[0]{\textsc{Ski}\xspace}
+\newcommand{\lldb}[0]{\textsc{LLDB}\xspace}
+\newcommand{\racepro}[0]{\textsc{RacePro}\xspace}
+\newcommand{\criu}[0]{\textsc{CRIU}\xspace}
+\newcommand{\lxc}[0]{\textsc{LXC}\xspace}
+\newcommand{\tern}[0]{\textsc{Tern}\xspace}
+\newcommand{\peregrine}[0]{\textsc{Peregrine}\xspace}
+\newcommand{\parrot}[0]{\textsc{Parrot}\xspace}
+\newcommand{\repframe}[0]{\textsc{RepFrame}\xspace}
+\newcommand{\grace}[0]{Grace\xspace}
+\newcommand{\coredet}[0]{\textsc{CoreDet}\xspace}
+\newcommand{\kendo}[0]{Kendo\xspace}
+\newcommand{\dthreads}[0]{\textsc{DThreads}\xspace}
+\newcommand{\determinator}[0]{Determinator\xspace}
+\newcommand{\dos}[0]{dOS\xspace}
+\newcommand{\ddos}[0]{DDOS\xspace}
+\newcommand{\timealgo}[0]{time bubbling\xspace}
+\newcommand{\ldpreload}[0]{LD\_PRELOAD\xspace}
+\newcommand{\ntimeout}[0]{$W_{timeout}$\xspace}
+\newcommand{\nclock}[0]{$N_{clock}$\xspace}
+
+\newcommand{\windows}{\v{Windows}\xspace}
+\newcommand{\chrome}{\v{Chrome}\xspace}
+\newcommand{\moonlight}{\v{Moonlight}\xspace}
+\newcommand{\linux}{\v{Linux}\xspace}
+\newcommand{\macos}{\v{Mac OS}\xspace}
+\newcommand{\ios}{\v{iOS}\xspace}
+\newcommand{\darwin}{\v{Darwin}\xspace}
+\newcommand{\iexplorer}{\v{IE}\xspace}
+\newcommand{\libsafe}{\v{Libsafe}\xspace}
+\newcommand{\libvirt}{\v{Libvirt}\xspace}
+\newcommand{\freebsd}{\v{FreeBSD}\xspace}
+\newcommand{\kde}{\v{KDE}\xspace}
+\newcommand{\ssdb}{\v{SSDB}\xspace}
+\newcommand{\apache}{\v{Apache}\xspace}
+\newcommand{\mysql}{\v{MySQL}\xspace}
+\newcommand{\mongoose}[0]{\v{Mongoose}\xspace}
+\newcommand{\ab}{\v{ApacheBench}\xspace}
+\newcommand{\clamav}{\v{ClamAV}\xspace}
+\newcommand{\upnp}{uPnP\xspace}
+\newcommand{\mediatomb}{\v{MediaTomb}\xspace}
+\newcommand{\memcached}{\v{Memcached}\xspace}
+\newcommand{\mencoder}{\v{mencoder}\xspace}
+\newcommand{\mongodb}{\v{MongoDB}\xspace}
+\newcommand{\sysbench}{\v{SysBench}\xspace}
+\newcommand{\zookeeper}{\v{ZooKeeper}\xspace}
+
+
+\newcommand{\aget}[0]{\v{aget}\xspace}
+\newcommand{\pthread}[0]{\mbox{Pthreads}\xspace}
+\newcommand{\openldap}[0]{{OpenLDAP}\xspace}
+\newcommand{\redis}[0]{{Redis}\xspace}
+\newcommand{\bdb}[0]{{Berkeley DB}\xspace}
+\newcommand{\vtune}[0]{\v{VTune}\xspace}
+\newcommand{\http}[0]{\mbox{HTTP}\xspace}
+
+% In short.
+\newcommand{\eg}{{e.g.}}
+\newcommand{\ie}{{i.e.}}
+\newcommand{\etc}{{etc}}
+\newcommand{\para}[1]{\vspace{.00in}\noindent{\bf #1}}
+\newcommand{\wrt}{{w.r.t. }}
+\newcommand{\cf}{{cf. }}
+
+% Synch and network operations.
+\newcommand{\checktimebubble}[0]{\v{check\_add\_timebubble()}\xspace}
+\newcommand{\mutexlock}[0]{\v{pthread\_mutex\_lock()}\xspace}
+\newcommand{\connect}[0]{\v{connect()}\xspace}
+\newcommand{\send}[0]{\v{send()}\xspace}
+\newcommand{\sendto}[0]{\v{sendto()}\xspace}
+\newcommand{\sendmsg}[0]{\v{sendmsg()}\xspace}
+\newcommand{\mywrite}[0]{\v{write()}\xspace}
+\newcommand{\pwrite}[0]{\v{pwrite()}\xspace}
+\newcommand{\close}[0]{\v{close()}\xspace}
+\newcommand{\recv}[0]{\v{recv()}\xspace}
+\newcommand{\select}[0]{\v{select()}\xspace}
+\newcommand{\poll}[0]{\v{poll()}\xspace}
+\newcommand{\epollwait}[0]{\v{epoll\_wait()}\xspace}
+\newcommand{\accept}[0]{\v{accept()}\xspace}
+\newcommand{\uselib}[0]{\v{uselib()}\xspace}
+\newcommand{\mmap}[0]{\v{mmap()}\xspace}
+
+% Parrot primitives.
+\newcommand{\getturn}[0]{\v{get\_turn()}\xspace}
+\newcommand{\putturn}[0]{\v{put\_turn()}\xspace}
+\newcommand{\wait}[0]{\v{wait()}\xspace}
+\newcommand{\signal}[0]{\v{signal()}\xspace}
+
+% Evaluation stats.
+\newcommand{\github}[0]{\url{github.com/asplos17-paper82/owl}}
+% \newcommand{\ntype}[0]{four\xspace}
+\newcommand{\nprog}[0]{10\xspace}
+\newcommand{\nextraattacks}[0]{XX\xspace}
+\newcommand{\nattacks}[0]{26\xspace}
+\newcommand{\nconfirmed}[0]{15\xspace}
+\newcommand{\nreproduced}[0]{10\xspace} % Concurrency attacks that we reproduced
+\newcommand{\nreproducedProgs}[0]{6\xspace}
+\newcommand{\nreproducedNoRetry}[0]{8\xspace}
+\newcommand{\nreproducedInter}[0]{7\xspace}
+\newcommand{\napacheDetected}[0]{783\xspace} % race report number of apache
+\newcommand{\nmysqlDetectedSameReq}[0]{202\xspace} % race report number of 
+% mysql on same req
+\newcommand{\nmysqlDetected}[0]{1123\xspace} % race report number of mysql
+% \newcommand{\apacheoverflowvalue}[0]{\verb!12345678!}
+\newcommand{\nbackendDetected}[0]{10\xspace} % Concurrency attacks that backend is able to detect
+\newcommand{\nevalProg}[0]{9\xspace}
+\newcommand{\nbuggyProg}[0]{2\xspace}
+\newcommand{\nvulnerableProg}[0]{4\xspace}
+\newcommand{\nunknownVulUnknownBug}[0]{1\xspace}
+\newcommand{\nunknownVulknownBug}[0]{3\xspace}
+\newcommand{\numNewAttacks}[0]{3\xspace}
+\newcommand{\nraces}[0]{16049\xspace} % Number of raw race reported by tsan
+\newcommand{\nknownBugProg}[0]{5\xspace} % Number of programs evaluated with known bugs
+\newcommand{\nnew}[0]{4\xspace}
+\newcommand{\nknownVul}[0]{7\xspace}
+\newcommand{\nunknownVul}[0]{3\xspace}
+\newcommand{\reducerate}[0]{94.3\%\xspace}
+\newcommand{\nadhocsync}[0]{22\xspace}
+\newcommand{\ncustomizedsync}[0]{88\xspace}
+
+
+\def\LGfsize{\footnotesize}
+%\pagestyle{empty}
+
+
+% \conferenceinfo{SOSP'15}{October 4--7, 2015, Monterey, CA}
+% \copyrightyear{2015} 
+% \copyrightdata{978-1-4503-3834-9/15/10} 
+% \doi{2815400.2815427}
+
+\title{\mytitle}
+\setlength{\columnsep}{0.25in}
+% \authorinfo{XXX}{YYY}
+
+\author[*]{Paper \#82}
+% \author[*]{Rui Gu}
+% \author[*]{Cheng Liu}
+% \author[x]{Tianyu Chen}
+% \author[*]{Junfeng Yang}
+% \setlength{\affilsep}{0.5em}
+% \renewcommand\AB@affilsepx{\hspace{28.0 mm}\protect\Affilfont}
+% \affil[+]{\textrm\fontsize{10}{10}\selectfont The University of Hong Kong}
+% \affil[*]{\textrm Columbia University}
+% \affil[x]{\textrm Tsinghua University\vspace{-7.0 mm}}
+
+\begin{document}
+
+% Hack for: Package caption Error: No float type 'copyrightbox' defined.
+%\newcounter{copyrightbox}
+
+\date{}
+
+%\author[+]{\hspace{0 mm}\fontsize{10}{10}\selectfont Paper 247, SOSP 2015}
+\maketitle
+%\thispagestyle{empty}
+
+\begin{sloppypar}
+\begin{abstract}
+\input{abstract}
+\end{abstract}
+\end{sloppypar}
+
+% \begin{sloppypar}
+%% %\category{D.2.5}{Software Engineering}{Testing and Debugging}
+%% \category{D.4.5}{Operating Systems}{Threads, Reliability}
+%% \category{D.2.4}{Software Engineering}{Software/Program Verification}
+%% \terms{Algorithms, Design, Reliability, Performance}
+%% \keywords{\mykeywords}
+
+%% \vskip 2mm
+%% \noindent {\small \bf Categories and Subject Descriptors:} \vskip -.2mm
+%% \noindent
+%% {\footnotesize D.4.5~[{\bf Operating Systems}]: {Threads, Reliability}\\
+%% D.2.4~[{\bf Software Engineering}]: {Software/Program Verification};}
+%% \vskip 1mm
+%% \noindent {\small \bf General Terms:} \vskip -.2mm
+%% \noindent
+%% {\footnotesize Algorithms, Design, Reliability, Performance}
+%% \vskip 1mm
+%% \noindent {\small \bf Keywords:} \vskip -.2mm
+%% \noindent
+%% {\footnotesize \mykeywords}
+
+% \vskip 2mm
+% \noindent {\small \bf Categories and Subject Descriptors:}
+% {\small D.4.5~[{\bf Operating Systems}]: {Threads, Reliability};
+%   D.2.4~[{\bf Software Engineering}]: {Software/Program Verification};}
+% \vskip .1mm
+% \noindent {\small \bf General Terms:} {\small Algorithms, Design,
+%   Reliability, Performance}
+% \vskip .1mm
+% \noindent {\small \bf Keywords:} {\small \mykeywords}
+% 
+% \end{sloppypar}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Add page number.
+\setcounter{page}{1}
+\pagenumbering{arabic}
+
+\thispagestyle{plain}
+\pagestyle{plain}
+\setlength{\footskip}{20pt}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\begin{sloppypar}
+
+%\vskip 2mm
+%\noindent {\small \bf Categories and Subject Descriptors:}
+%{\small D.4.5~[{\bf Operating Systems}]: {Threads, Reliability};
+  %C.2.4~[{\bf Computer-communication Networks}]: {Distributed Systems};}
+%\vskip .1mm
+%\noindent {\small \bf General Terms:} {\small Algorithms, Design,
+  %Reliability, Performance}
+%\vskip .1mm
+%\noindent {\small \bf Keywords:} {\small \mykeywords}
+
+%\end{sloppypar}
+
+\begin{sloppypar}
+
+\input{intro}
+\input{study}
+\input{overview}
+\input{tool}
+% \input{implementation}
+\input{discussion}
+\input{evaluation}
+\input{related}
+\input{conclusion}
+% \input{ack}
+\end{sloppypar}
+
+% uncomment to tweak with bib spacing
+%\setlength\bibsep{2.25pt}
+{
+%\small
+ \bibliographystyle{abbrv}
+ \bibliography{bib/biblio}
+}
+
+\end{document}

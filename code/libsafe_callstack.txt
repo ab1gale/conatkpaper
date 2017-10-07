@@ -1,0 +1,2 @@
+libsafe_strcpy (intercept.c:151)
+stack_check (util.c:164)
