@@ -73,13 +73,13 @@ $(SRC).ps: $(FORCE) $(SRC).dvi $(SRC).bbl $(MISC)
 
 $(SRC).bbl: $(FORCE) $(SRCBIB) $(MISC)
 	@echo "[$(WHICHLATEX)]: first pass to generate *.aux files"
-	@$(WHICHLATEX) $(SRC) 2>&1 >> $(SRC).build.log
+	@$(WHICHLATEX) $(SRC) #2>&1 #>> $(SRC).build.log
 	@echo "[$(BIBTEX)] $(SRC)"
-	@$(BIBTEX) $(SRC) 2>&1 >> $(SRC).build.log
+	@$(BIBTEX) $(SRC) #2>&1 >> #$(SRC).build.log
 	@echo "[$(WHICHLATEX)]: second pass to generate *.bib files"
-	@$(WHICHLATEX) $(SRC) 2>&1 >> $(SRC).build.log
+	@$(WHICHLATEX) $(SRC) #2>&1 >> $(SRC).build.log
 	@echo "[$(WHICHLATEX)]: third pass to get cross-referecne work"
-	@$(WHICHLATEX) $(SRC) 2>&1 >> $(SRC).build.log
+	@$(WHICHLATEX) $(SRC) #2>&1 >> $(SRC).build.log
 
 pdf: $(SRC).pdf
 dvi: $(SRC).dvi
