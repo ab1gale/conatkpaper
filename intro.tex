@@ -1,23 +1,57 @@
 \section{Introduction} \label{sec:intro}
 
 
-Conccurrent program hard to be correct. Concurrency bugs are common in modern muliti-thread programs. 
-Some concurrent bugs lead to severe security consequences. This is called concurrent attacks.
-
-
-Extant works well studied(study? ) detecting concurrent bugs. Most of them focus on detecting 
-bug happenings. Our study shows that security consequences may happen after corrupted variable 
-propageting through program execution. So current concurrent bug detection tools may 
-
-Although some work (\conmem) propose to focus on severe bugs that may cause program crashes. 
-However, our observations over \observenum concurrency attacks shows that ... 1. Hidden severe bugs may not causes program crash2. Crash bugs may make worse effects..
+%Conccurrent program is hard to be correct. Concurrency bugs are common in modern multi-thread programs. 
+%Some concurrent bugs cause order violation, wrong output, program crash. 
 
 
 
+%Even worse, a prior study shows that concurrent bugs leads to concurrent attacks:...
 
 
 
-Conventional ways for analyzing potential 
+%Extant work well detects concurrent bugs (well studys on interleaving). Most of them focus on detecting 
+%bug happenings. Some work (\conmem) propose to focus on severe bugs that may cause program crashes. 
+
+
+%However,Our observations over \observenum concurrency attacks shows that ... 
+
+
+% First of firsts?  Most concurrent attacks is due to data race
+
+%First, security consequences may happen after raced variables propagating through program executions. 
+
+%Second, bugs that cause crash may lead to worse effects..
+
+
+%Although extant work is great, they cannot solve the following issues.
+
+
+%First, concurrent attacks are hidden in large number of bug reports. 
+
+
+%Second, exploiting the concurrent attacks needs more information.
+
+
+%To addressing the issues, we introduce a model covering all studied attacks.
+
+
+%Leveraging the model, we build a framework.
+
+
+%Two parts, \firstpart - Reducer (combining dynamic detection and static analysis)
+
+
+%\secondpart ... Fuzzer?
+
+
+% Evaluation shows that we reduce 90% false positive reports. 
+% Detected 7 known attacks, 2 previous bug to attack, 4 unkown attacks.
+
+
+
+%Contribution.
+
 
 
 
