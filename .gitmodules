@@ -1,6 +1,4 @@
 [submodule "old"]
 	path = old
 	url = https://github.com/hemingcui/usenix16-con-attacks
-[submodule "bib"]
-	path = bib
-	url = https://github.com/hemingcui/bib.git
+

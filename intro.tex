@@ -1,54 +1,38 @@
 \section{Introduction} \label{sec:intro}
 
 
-%Conccurrent program is hard to be correct. Concurrency bugs are common in modern multi-thread programs. 
-%Some concurrent bugs cause execution order violation, wrong output, program crash. 
+%1. Interleaving - crash - explicit behaviour - 
+Conccurrent program is hard to be correct. 
+Concurrency bugs are common in modern multi-thread programs. 
+Some concurrent bugs cause order violation, wrong output, program crash. 
+
+2. Recent study - con attacks - structural , consequence, [in-explicit severer]
 
 
+3. Unfortunately, most extant work -- detect bug, corruption 
+   Our study - old bug - attack
+   However in danger
+   Sigmod 
 
-%Even worse, a prior study shows that concurrent bugs leads to concurrent attacks:...
+4. Two major challenges : 
+a. concurrent bug detectors (justify) 
 
-
-%Extant work well detects concurrent bugs (well studys on interleaving). Most of them focus on detecting 
-%bug happenings. Some work (\conmem) propose to focus on severe bugs that may cause program crashes. 
-
-
-%However,Our observations over \observenum concurrency attacks shows that ... 
-
-
-% First Most concurrent attacks is due to data race
-
-% Second, concurrent attacks may happen after raced variables propagating through program executions. 
-%(Through control flow and data flow). 
-
-% Third, bugs that cause crash may lead to worse effects..
+b. other input for attack
 
 
-%Although extant work is great, they cannot solve the following issues.
-
-%First, concurrent attacks are hidden in large number of bug reports. Exsiting works cannot provide 
-%analysis on these attacks. 
-
-%Second, exploiting the concurrent attacks needs more information. 
+5. New model for general attacks [] -- *vulnerability window 
 
 
-%To addressing the issues, we introduce a model covering all studied attacks.
+6. Leveraging this model, framework - address two challenges.
 
+7. Two phase. 
 
-%Leveraging the model, we build a framework.
+9. Implementation / CVE . reduction
 
+10. Contribution
+     new model/ system / General -extension- .. new CVE..
 
-%Two parts, \firstpart - Reducer (combining dynamic detection and static analysis)
-
-
-%\secondpart ... Fuzzer?
-
-
-% Evaluation shows that we reduce 90% false positive reports. 
-% Detected 7 known attacks, 2 previous bug to attack, 4 unkown attacks.
-
-
-%Contribution.
+11. The rest of section
 
 
 
