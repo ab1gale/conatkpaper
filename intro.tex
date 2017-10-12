@@ -2,11 +2,17 @@
 
 
 %1. Interleaving - crash - explicit behaviour - 
-Conccurrent program is hard to be correct. 
-Concurrency bugs are common in modern multi-thread programs. 
-Some concurrent bugs cause order violation, wrong output, program crash. 
+Concurrency program is hard to be correct. 
+Concurrency bugs are common in modern multi-threaded programs\cite{conmem:asplos10,conseq:asplos11}. 
+These bugs cause order violation, wrong output, memory corruption.
+Extant work focus on exploring interleaving that cause concurrency bugs, 
+and by employing memory sanitizers and thread sanitizers, severe concurrency bugs
+may be explicit.
 
-2. Recent study - con attacks - structural , consequence, [in-explicit severer]
+
+
+%2. Recent study - con attacks - structural , consequence, [in-explicit severer]
+Recent studies\cite{acidrain:sigmod17,con:hotpar12} shows rise of concern about concurrency attacks.
 
 
 3. Unfortunately, most extant work -- detect bug, corruption 
