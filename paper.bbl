@@ -1,0 +1,59 @@
+\begin{thebibliography}{1}
+
+\bibitem{apache-bug-25520}
+Apache bug 25520.
+\newblock \url{https://bz.apache.org/bugzilla/show_bug.cgi?id=25520}.
+
+\bibitem{apache-bug-46215}
+Apache bug 46215.
+\newblock \url{https://bz.apache.org/bugzilla/show_bug.cgi?id=46215}.
+
+\bibitem{lu:muvi:sosp}
+S.~Lu, S.~Park, C.~Hu, X.~Ma, W.~Jiang, Z.~Li, R.~A. Popa, and Y.~Zhou.
+\newblock Muvi: automatically inferring multi-variable access correlations and
+  detecting related semantic and concurrency bugs.
+\newblock In {\em Proceedings of the 21st ACM Symposium on Operating Systems
+  Principles (SOSP '07)}, pages 103--116, 2007.
+
+\bibitem{lu:concurrency-bugs}
+S.~Lu, S.~Park, E.~Seo, and Y.~Zhou.
+\newblock Learning from mistakes: a comprehensive study on real world
+  concurrency bug characteristics.
+\newblock In {\em Thirteenth International Conference on Architecture Support
+  for Programming Languages and Operating Systems (ASPLOS '08)}, pages
+  329--339, Mar. 2008.
+
+\bibitem{acidrain:sigmod17}
+P.~B. Todd~Warszawski.
+\newblock Acidrain: Concurrency-related attacks on database-backed web
+  applications.
+\newblock In {\em Proceedings of the 2017 ACM SIGMOD International Conference
+  on Management of Data}, pages 5--20. ACM, 2017.
+
+\bibitem{tsan}
+Threadsanitizer.
+\newblock \url{https://code.google.com/p/data-race-test/wiki/ThreadSanitizer},
+  2015.
+
+\bibitem{con:hotpar12}
+J.~Yang, A.~Cui, S.~Stolfo, and S.~Sethumadhavan.
+\newblock Concurrency attacks.
+\newblock In {\em the Fourth USENIX Workshop on Hot Topics in Parallelism
+  (HOTPAR '12)}, June 2012.
+
+\bibitem{conseq:asplos11}
+W.~Zhang, J.~Lim, R.~Olichandran, J.~Scherpelz, G.~Jin, S.~Lu, and T.~Reps.
+\newblock {ConSeq}: detecting concurrency bugs through sequential errors.
+\newblock In {\em Sixteenth International Conference on Architecture Support
+  for Programming Languages and Operating Systems (ASPLOS '11)}, pages
+  251--264, Mar. 2011.
+
+\bibitem{conmem:asplos10}
+W.~Zhang, C.~Sun, and S.~Lu.
+\newblock {ConMem}: detecting severe concurrency bugs through an
+  effect-oriented approach.
+\newblock In {\em Fifteenth International Conference on Architecture Support
+  for Programming Languages and Operating Systems (ASPLOS '10)}, pages
+  179--192, Mar. 2010.
+
+\end{thebibliography}

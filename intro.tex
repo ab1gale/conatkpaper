@@ -3,9 +3,11 @@
 
 %1. Interleaving - crash - explicit behaviour - 
 Concurrency program is hard to be correct. 
-Concurrency bugs are common in modern multi-threaded programs\cite{conmem:asplos10,conseq:asplos11}. 
-These bugs cause order violation, wrong output, memory corruption.
-Extant work focus on exploring interleaving that cause concurrency bugs, 
+Concurrency bugs are common in modern multi-threaded programs\cite{lu:concurrency-bugs,conmem:asplos10,conseq:asplos11, lu:muvi:sosp} 
+including atomic violation, ..., and especially data race.
+Extant work well explore interleaving that cause concurrency bugs, 
+and efficiently detect explicit concurrency bugs that direct to  
+severe consequences such as execution order violation, wrong output and program crash.
 %and by employing memory sanitizers and thread sanitizers, severe concurrency bugs
 %may be explicit(?..).
 
@@ -30,10 +32,13 @@ and finally achieve arbitrary code execution and get a root shell.
 %   Our study - old bug - attack
 %   However in danger
 %   Sigmod 
-
-Unfortunately, extant work\cite{tsan,conseq:asplos11} focuses on detecting concurrency bugs. 
-Although some \cite{conmem:asplos10} propose to care about severity of consequences like program crash.
-However, our study shows that 
+Unfortunately, although great progress has been made to detect and replay severe bugs (program crash\cite{conmem:asplos10}), 
+extant work still lacks exploration of concurrency attacks from enormous concurrency bugs. Our study over several known concurrency 
+bugs\cite{apache-bug-25520, apache-bug-46215} shows that even concurrency bugs have been successfully detected and reported, 
+professionals still lack knowledge about how severe consequences these bugs may cause. 
+For instance, \emph{apache-25520}\cite{apache-bug-25520} has been 
+reported over years and well studied by researchers\cite{lu:concurrency-bugs}.  
+We still firstly exploited a new heap overflow attack leveraging on this bug and break the HTML integrity.  
 
 %4. Two major challenges : 
 %a. concurrent bug detectors (justify) 
