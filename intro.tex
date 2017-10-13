@@ -6,39 +6,53 @@ Concurrency program is hard to be correct.
 Concurrency bugs are common in modern multi-threaded programs\cite{conmem:asplos10,conseq:asplos11}. 
 These bugs cause order violation, wrong output, memory corruption.
 Extant work focus on exploring interleaving that cause concurrency bugs, 
-and by employing memory sanitizers and thread sanitizers, severe concurrency bugs
-may be explicit.
-
-
+%and by employing memory sanitizers and thread sanitizers, severe concurrency bugs
+%may be explicit(?..).
 
 %2. Recent study - con attacks - structural , consequence, [in-explicit severer]
-Recent studies\cite{acidrain:sigmod17,con:hotpar12} shows rise of concern about concurrency attacks.
+Recent studies\cite{acidrain:sigmod17,con:hotpar12} show rise of concern about \emph{concurrency attacks}.
+By triggering concurrency bugs and employing subtle inputs, 
+hackers may leverage the corrupted memory to construct 
+attacks, including privilege escalations\cite{}, hijacking code execution\cite{}, bypassing security checks\cite{}, 
+and breaking database integrity\cite{acidrain:sigmod17}.
+However, these vulnerabilities often hide in large amount of concurrency bug reports. 
+For example, bug information leveraged by a xxx attack is hidden in 1000 race reports 
+produced by TSAN\cite{tsan}, a famous and widely used data race detector. 
+Also, to construct concurrency attacks, despite the inputs of leveraged concurrency bugs, 
+attacker may need other crafted inputs to exploit the vulnerabilities. 
+In CVE-2017-7533 exploited by our team, 
+despite leveraging a data race bug to construct kernel heap overflow, 
+we also require another thread to be the victim target, 
+and finally achieve arbitrary code execution and get a root shell.   
 
 
-3. Unfortunately, most extant work -- detect bug, corruption 
-   Our study - old bug - attack
-   However in danger
-   Sigmod 
+%3. Unfortunately, most extant work -- detect bug, corruption 
+%   Our study - old bug - attack
+%   However in danger
+%   Sigmod 
 
-4. Two major challenges : 
-a. concurrent bug detectors (justify) 
+Unfortunately, extant work\cite{tsan,conseq:asplos11} focuses on detecting concurrency bugs. 
+Although some \cite{conmem:asplos10} propose to care about severity of consequences like program crash.
+However, our study shows that 
 
-b. other input for attack
+%4. Two major challenges : 
+%a. concurrent bug detectors (justify) 
+%b. other input for attack
 
 
-5. New model for general attacks [] -- *vulnerability window 
+%5. New model for general attacks [] -- *vulnerability window 
 
 
-6. Leveraging this model, framework - address two challenges.
+%6. Leveraging this model, framework - address two challenges.
 
-7. Two phase. 
+%7. Two phase. 
 
-9. Implementation / CVE . reduction
+%9. Implementation / CVE . reduction
 
-10. Contribution
-     new model/ system / General -extension- .. new CVE..
+%10. Contribution
+%     new model/ system / General -extension- .. new CVE..
 
-11. The rest of section
+%11. The rest of section
 
 
 
