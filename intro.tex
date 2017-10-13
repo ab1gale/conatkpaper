@@ -2,7 +2,7 @@
 
 
 %1. Interleaving - crash - explicit behaviour - 
-Concurrency program is hard to be correct. 
+Multi-threaded program is hard to be correct. 
 Concurrency bugs are common in modern multi-threaded programs\cite{lu:concurrency-bugs,conmem:asplos10,conseq:asplos11, lu:muvi:sosp} 
 including atomic violation, ..., and especially data race.
 Extant work well explore interleaving that cause concurrency bugs, 
@@ -13,39 +13,66 @@ severe consequences such as execution order violation, wrong output and program 
 
 %2. Recent study - con attacks - structural , consequence, [in-explicit severer]
 Recent studies\cite{acidrain:sigmod17,con:hotpar12} show rise of concern about \emph{concurrency attacks}.
+Just like sequential bugs leading to attacks, concurrency bugs also lead to concurrency attacks. 
 By triggering concurrency bugs and employing subtle inputs, 
-hackers may leverage the corrupted memory to construct 
-attacks, including privilege escalations\cite{}, hijacking code execution\cite{}, bypassing security checks\cite{}, 
+hackers may leverage the corrupted memory to conduct  
+attacks including privilege escalations\cite{}, hijacking code execution\cite{}, bypassing security checks\cite{}, 
 and breaking database integrity\cite{acidrain:sigmod17}.
-However, these vulnerabilities often hide in large amount of concurrency bug reports. 
+These vulnerabilities often hide in large amount of concurrency bug reports. 
 For example, bug information leveraged by a xxx attack is hidden in 1000 race reports 
 produced by TSAN\cite{tsan}, a famous and widely used data race detector. 
-Also, to construct concurrency attacks, despite the inputs of leveraged concurrency bugs, 
-attacker may need other crafted inputs to exploit the vulnerabilities. 
-In CVE-2017-7533 exploited by our team, 
-despite leveraging a data race bug to construct kernel heap overflow, 
-we also require another thread to be the victim target, 
-and finally achieve arbitrary code execution and get a root shell.   
+%Also, to construct concurrency attacks, despite the inputs of leveraged concurrency bugs, 
+%attacker may need other crafted inputs to exploit the vulnerabilities. 
+Also, despite threads conducting concurrency bugs, 
+behaviors of another thread may also be affected when data race bugs infecting shared memory (\eg heap overflow)\cite{apache-bug-25520,}. 
 
 
 %3. Unfortunately, most extant work -- detect bug, corruption 
 %   Our study - old bug - attack
 %   However in danger
 %   Sigmod 
-Unfortunately, although great progress has been made to detect and replay severe bugs (program crash\cite{conmem:asplos10}), 
+Unfortunately, although great progress has been made to detect and replay severe bugs(\eg ConMem\cite{conmem:asplos10}), 
 extant work still lacks exploration of concurrency attacks from enormous concurrency bugs. Our study over several known concurrency 
 bugs\cite{apache-bug-25520, apache-bug-46215} shows that even concurrency bugs have been successfully detected and reported, 
-professionals still lack knowledge about how severe consequences these bugs may cause. 
+professionals may still lack knowledge about how severe consequences these bugs may cause. 
 For instance, \emph{apache-25520}\cite{apache-bug-25520} has been 
 reported over years and well studied by researchers\cite{lu:concurrency-bugs}.  
-We still firstly exploited a new heap overflow attack leveraging on this bug and break the HTML integrity.  
+We are the first to exploit a new heap overflow attack leveraging on this bug and break the HTML integrity.  
 
 %4. Two major challenges : 
 %a. concurrent bug detectors (justify) 
 %b. other input for attack
+We studied \nattacks attacks and find two major challenges for exploring concurrency attacks from concurrency bugs. 
+First, concurrency attacks may be implicit and hidden in common concurrency bugs. 
+Existing concurrent bug detectors focus on bug happening itself. 
+ConMem\cite{conmem:asplos10} first propose to 
+consider concurrency bugs that may cause severe consequences (\eg program crash)
+and ConSeq\cite{conseq:asplos11} uses severe consequence report to help diagnose concurrency bugs. 
+However, our observation shows that explicit error (\eg program crash) is not necessary for concurrency 
+attacks. Some concurrency bugs (\eg \emph{xxx-xxx}) may not cause program crash or interrupted, 
+but attackers may still leverage them and conduct attacks with crafted input. 
+%Here the propagation path?
+%
+Worse still, crash bugs may even lead to more server vulnerabilities. 
+In \emph{CVE-2017-7533} conducted by our team, although the data race primarily causes kernel crash, 
+we crafted the input and successfully conduct a privilege escalation attack without crashing the kernel.
+Current concurrency bug detecting tools are not designed to analyze this kind of latent vulnerabilities, 
+and hence may direct wrong level of warnings towards the bugs.  
 
+
+Second, extant work ignores indicating the \emph{victim thread} of concurrency attacks.
+A concurrency bug may become much more vulnerable when attackers employee another thread to construct 
+their attacks. 
+In CVE-2017-7533, we do not only leverage two threads to trigger a data race and construct kernel heap overflow, 
+but also require another \emph{victim thread} to lay the target structure on the same heap. 
+By crafting inputs and corrupt the target structure, we finally achieve arbitrary code execution and get a root shell. 
+Automatically indicating the victim thread would be of vital helpful for developers to better understand the latent vulnerabilities.
+For example, in the Apache-25520 case, after knowing about information of victim thread, 
+we successfully increased the severity of the bug and conducted an integrity violation.
 
 %5. New model for general attacks [] -- *vulnerability window 
+
+To address the two challenges, we introduce a new model covering all concurrency attacks we studied. 
 
 
 %6. Leveraging this model, framework - address two challenges.
