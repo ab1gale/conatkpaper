@@ -13,7 +13,7 @@ severe consequences such as execution order violation, wrong output and program 
 
 %2. Recent study - con attacks - structural , consequence, [in-explicit severer]
 Recent studies\cite{acidrain:sigmod17,con:hotpar12} show rise of concern about \emph{concurrency attacks}.
-Just like sequential bugs leading to attacks, concurrency bugs also lead to concurrency attacks. 
+Just like sequential bugs leads to attacks, concurrency bugs also lead to concurrency attacks. 
 By triggering concurrency bugs and employing subtle inputs, 
 hackers may leverage the corrupted memory to conduct  
 attacks including privilege escalations\cite{}, hijacking code execution\cite{}, bypassing security checks\cite{}, 
@@ -53,7 +53,7 @@ attacks. Some concurrency bugs (\eg \emph{xxx-xxx}) may not cause program crash 
 but attackers may still leverage them and conduct attacks with crafted input. 
 %Here the propagation path?
 %
-Worse still, crash bugs may even lead to more server vulnerabilities. 
+Worse still, crash bugs may even lead to more severe vulnerabilities. 
 In \emph{CVE-2017-7533} conducted by our team, although the data race primarily causes kernel crash, 
 we crafted the input and successfully conduct a privilege escalation attack without crashing the kernel.
 Current concurrency bug detecting tools are not designed to analyze this kind of latent vulnerabilities, 
@@ -72,17 +72,49 @@ we successfully increased the severity of the bug and conducted an integrity vio
 
 %5. New model for general attacks [] -- *vulnerability window 
 
-To address the two challenges, we introduce a new model covering all concurrency attacks we studied. 
+To address the two challenges, we introduced a new model that explains most concurrency attacks we studied. 
+The model breaks down concurrency attacks into three stages: bug happening, bug-to-attack propagation, 
+and attack happening. Bug happening is where the concurrency bugs happened. 
 
 
 %6. Leveraging this model, framework - address two challenges.
-
+Leveraging this model, we designed a two-phase framework, \xxx, for detecting concurrency attacks. 
 %7. Two phase. 
+The first phase is \emph{concurrency analyzer} to . 
+
+The second phase is \emph{concurrency fuzzer?} to ... .
 
 %9. Implementation / CVE . reduction
+We implemented \xxx on Linux, supporting both user space and kernel space attack detection. 
+
+
+
+We evaluated OWL on 6 diverse, widely used programs, including Apache, Chrome, Libsafe, Linux kernel, MySQL,
+and SSDB. OWL’s benign schedule hints and runtime verifiers reduced 94.3\% of the race reports, 
+and it did not miss the evaluated concurrency attacks. With the greatly reduced reports,
+OWL’s vulnerable input hints helped us identify subtle
+vulnerable inputs, leading to the detection of 7 known concurrency
+attacks as well as 3 previous unknown, severe ones
+in SSDB and Apache. The analysis performance of OWL was
+reasonable for in-house testing.
+
 
 %10. Contribution
 %     new model/ system / General -extension- .. new CVE..
+This paper makes two major contributions:
+
+\begin{tightenum}
+\item \textbf{A general model explains happening and exploiting of concurrency attacks.} 
+This model explains most concurrency attacks in wild and 
+providing two major direction for detecting concurrency attacks. 
+	
+\item \textbf{A general concurrency attack detection framework and its implementation, \xxx.} 
+\xxx can easily employ existing concurrent bug detectors and vulnerability analyzer 
+to improve the accuracy and ??? of detection.
+	
+\end{tightenum}
+
+ 
 
 %11. The rest of section
 
