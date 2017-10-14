@@ -80,7 +80,14 @@ and attack happening. Bug happening is where the concurrency bugs happened.
 %6. Leveraging this model, framework - address two challenges.
 Leveraging this model, we designed a two-phase framework, \xxx, for detecting concurrency attacks. 
 %7. Two phase. 
-The first phase is \emph{concurrency analyzer} to . 
+The first phase is \emph{concurrency analyzer} to analyze bug-to-attack propagations. 
+Our study found that most vulnerable races are already included in the race detectors’ reports, 
+and concurrency attacks sites are often explicit in program code.
+Therefore, we can perform static analysis
+on only the data and control flow propagations between the
+bug reports and the potential attack sites, then we can collect
+relevant call stacks and branch statements as the potentially
+vulnerable input hints.
 
 The second phase is \emph{concurrency fuzzer?} to ... .
 
@@ -117,6 +124,10 @@ to improve the accuracy and ??? of detection.
  
 
 %11. The rest of section
+The rest of this paper is structured as follows. 
+\S\ref{sec:background} introduces the background of concurrency attacks.
+\S\ref{sec:overview} gives an overview on the concurrency attack model and architecture of \xxx.
+\S\ref{}...
 
 
 
