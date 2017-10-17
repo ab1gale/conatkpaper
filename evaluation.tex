@@ -33,14 +33,14 @@ We focused our evaluation on four key questions:
 	\begin{tabular}{l|r|r|r|r|r|r|r}
 		{\bf Name} & {\bf LoC} & {\bf \# r.r.}& {\bf \# \xxx's r.} & {\bf \# atks} & {\bf \# atks found}  \\
 		\hline
-		\apache    &             &     &    &   &  \\
-		\chrome    &             &      &   &    &  \\
-		\libsafe   &             &     &  &  &  \\
-		\linux     &            &    &    &    &   \\
-		\mysql     &             &     &    &    &  \\
-		\ssdb      &             &     &    &    &   \\
+		\apache    &    290K    &   715  &  10   &  3  & 3 \\
+		\chrome    &   3.4M   & 1715  &  115 &  1  & 1 \\
+		\libsafe   &   3.4K     & 3  & 3 & 1 &  1 \\
+		\linux     &     2.8M    & 24641  & 34  &  2  & 2  \\
+		\mysql     &    1.5M    & 1123 &  16  &  2  & 2 \\
+		\ssdb      &  67K   &  12  &  2  &  1  & 1  \\
 		\hline\\[-2.3ex]
-		Total      &             &    &   &   &  \\
+		Total      &   -    &  -  &  - &  - & - \\
 	\end{tabular}
 	\vspace{-.1in}
 	\caption{{\em \xxx race report reduction and concurrency attack detection results.} \rm {Description}} 
@@ -56,10 +56,10 @@ We focused our evaluation on four key questions:
 	\begin{tabular}{l|r|r|r|r|r|r|r}
 		{\bf Name} & {\bf Type} & {\bf \# Fed Inputs}& {\bf \# Victim Inputs} & {\bf \# atks}  \\
 		\hline
-		\apache    &             &     &    &   \\
-		\linux     &  kmalloc64  & 180   &  6  &  1   \\
+		\apache    &   apr\_palloc   &  -   &  -  & -  \\
+		\linux     &  kmalloc  & 180   &  6  &  1   \\
 		\hline\\[-2.3ex]
-		Total      &             &    &   & \\
+		Total      &    -     &  -  & -  & -\\
 	\end{tabular}
 	\vspace{-.1in}
 	\caption{{\em \xxx's Concurrency Fuzzer.} \rm {Description}} 
