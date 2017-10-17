@@ -2,6 +2,14 @@ This is BibTeX, Version 0.99dThe top-level auxiliary file: paper.aux
 The style file: abbrv.bst
 Database file #1: bib-new/biblio.bib
 Warning--I didn't find a database entry for ""
+Warning--to sort, need author or key in uselib-bug-12791
+Warning--to sort, need author or key in mysql-bug-14747
+Warning--to sort, need author or key in berend-jan-wever-msiexploit
+Warning--to sort, need author or key in xwindows
+Warning--to sort, need author or key in theotheriphone
+Warning--to sort, need author or key in theotheriphone-2011
 Warning--to sort, need author or key in apache-bug-25520
+Warning--to sort, need author or key in cve:2017-7533
 Warning--to sort, need author or key in apache-bug-46215
-(There were 3 warnings)
+Warning--to sort, need author or key in mysql
+(There were 11 warnings)

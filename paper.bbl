@@ -1,4 +1,4 @@
-\begin{thebibliography}{1}
+\begin{thebibliography}{10}
 
 \bibitem{apache-bug-25520}
 Apache bug 25520.
@@ -7,6 +7,46 @@ Apache bug 25520.
 \bibitem{apache-bug-46215}
 Apache bug 46215.
 \newblock \url{https://bz.apache.org/bugzilla/show_bug.cgi?id=46215}.
+
+\bibitem{theotheriphone}
+{CVE-2008-0034}.
+\newblock \url{http://www.cvedetails.com/cve/CVE-2008-0034/}.
+
+\bibitem{xwindows}
+{CVE-2010-0923}.
+\newblock \url{http://www.cvedetails.com/cve/CVE-2010-0923}.
+
+\bibitem{theotheriphone-2011}
+{CVE-2010-1754}.
+\newblock \url{http://www.cvedetails.com/cve/CVE-2010-1754/}.
+
+\bibitem{cve:2017-7533}
+{CVE-2017-7533}.
+\newblock \url{https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2017-7533}.
+
+\bibitem{uselib-bug-12791}
+Linux kernel bug on uselib().
+\newblock \url{http://osvdb.org/show/osvdb/12791}.
+
+\bibitem{berend-jan-wever-msiexploit}
+{MSIE} javaprxy.dll {COM} object exploit.
+\newblock \url{http://www.exploit-db.com/exploits/1079/}.
+
+\bibitem{mysql-bug-14747}
+Mysql bug 14747.
+\newblock \url{https://bugs.mysql.com/bug.php?id=14747}.
+
+\bibitem{mysql}
+{MySQL Database}.
+\newblock \url{http://www.mysql.com/}, 2014.
+
+\bibitem{apache}
+Apache web server.
+\newblock \url{http://www.apache.org}, 2012.
+
+\bibitem{libsafe}
+{Libsafe}.
+\newblock \url{http://directory.fsf.org/wiki/Libsafe}.
 
 \bibitem{lu:muvi:sosp}
 S.~Lu, S.~Park, C.~Hu, X.~Ma, W.~Jiang, Z.~Li, R.~A. Popa, and Y.~Zhou.
@@ -23,6 +63,15 @@ S.~Lu, S.~Park, E.~Seo, and Y.~Zhou.
   for Programming Languages and Operating Systems (ASPLOS '08)}, pages
   329--339, Mar. 2008.
 
+\bibitem{valgrind:pldi}
+N.~Nethercote and J.~Seward.
+\newblock Valgrind: a framework for heavyweight dynamic binary instrumentation.
+\newblock In {\em Proceedings of the ACM SIGPLAN 2007 Conference on Programming
+  Language Design and Implementation (PLDI '07)}, pages 89--100, June 2007.
+
+\bibitem{SSDB}
+\url{ssdb.io/}.
+
 \bibitem{acidrain:sigmod17}
 P.~B. Todd~Warszawski.
 \newblock Acidrain: Concurrency-related attacks on database-backed web
@@ -34,6 +83,18 @@ P.~B. Todd~Warszawski.
 Threadsanitizer.
 \newblock \url{https://code.google.com/p/data-race-test/wiki/ThreadSanitizer},
   2015.
+
+\bibitem{wu2015:collaborative}
+Z.~Wu, K.~Lu, X.~Wang, and X.~Zhou.
+\newblock Collaborative technique for concurrency bug detection.
+\newblock {\em International Journal of Parallel Programming}, 43(2):260--285,
+  2015.
+
+\bibitem{syncfinder:osdi10}
+W.~Xiong, S.~Park, J.~Zhang, Y.~Zhou, and Z.~Ma.
+\newblock Ad hoc synchronization considered harmful.
+\newblock In {\em Proceedings of the Ninth Symposium on Operating Systems
+  Design and Implementation (OSDI '10)}, Oct. 2010.
 
 \bibitem{con:hotpar12}
 J.~Yang, A.~Cui, S.~Stolfo, and S.~Sethumadhavan.

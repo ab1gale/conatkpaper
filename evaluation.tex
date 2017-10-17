@@ -1,1 +1,70 @@
-\section{Evaluation}
+\section{Evaluation}\label{sec:evaluation}
+
+We evaluated \xxx on \nreproducedProgs widely used C/C++ programs, including 
+three server applications (\apache~\cite{apache} web server, 
+\mysql~\cite{mysql} database server, and SSDB~\cite{SSDB} 
+key-value store server), one library (\libsafe~\cite{libsafe}), the 4.11.9 Linux 
+kernel, and one web browser (\chrome). We used the programs' common performance 
+benchmarks as workloads. Our evaluation was done on XXX. 
+
+
+We focused our evaluation on four key questions:
+\begin{tightenum}
+	
+	
+	\item How many false reports from concurrency error 
+	detection tools can \xxx reduce (\S\ref{sec:reduce})?
+	
+	\item How many potential victim threads can \xxx indicate(\S\ref{sec:overview})?
+	
+	\item Can \xxx detect known concurrency attacks in the real-world
+	(\S\ref{sec:known-attacks})?
+	
+	\item Can \xxx detect previously unknown concurrency attacks in the real-world
+	(\S\ref{sec:unknown-attacks})?
+	
+	
+\end{tightenum}
+
+
+\begin{table}[ht!]
+	\footnotesize
+	\centering
+	\begin{tabular}{l|r|r|r|r|r|r|r}
+		{\bf Name} & {\bf LoC} & {\bf \# r.r.}& {\bf \# \xxx's r.} & {\bf \# atks} & {\bf \# atks found}  \\
+		\hline
+		\apache    &             &     &    &   &  \\
+		\chrome    &             &      &   &    &  \\
+		\libsafe   &             &     &  &  &  \\
+		\linux     &            &    &    &    &   \\
+		\mysql     &             &     &    &    &  \\
+		\ssdb      &             &     &    &    &   \\
+		\hline\\[-2.3ex]
+		Total      &             &    &   &   &  \\
+	\end{tabular}
+	\vspace{-.1in}
+	\caption{{\em \xxx race report reduction and concurrency attack detection results.} \rm {Description}} 
+	\label{tab:eval}
+	\vspace{-.2in}
+\end{table}
+
+
+
+\begin{table}[ht!]
+	\footnotesize
+	\centering
+	\begin{tabular}{l|r|r|r|r|r|r|r}
+		{\bf Name} & {\bf Type} & {\bf \# Fed Inputs}& {\bf \# Victim Inputs} & {\bf \# atks}  \\
+		\hline
+		\apache    &             &     &    &   \\
+		\linux     &  kmalloc64  & 180   &  6  &  1   \\
+		\hline\\[-2.3ex]
+		Total      &             &    &   & \\
+	\end{tabular}
+	\vspace{-.1in}
+	\caption{{\em \xxx's Concurrency Fuzzer.} \rm {Description}} 
+	\label{tab:eval}
+	\vspace{-.2in}
+\end{table}
+
+
