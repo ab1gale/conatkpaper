@@ -24,6 +24,10 @@ Apache bug 46215.
 {CVE-2017-7533}.
 \newblock \url{https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2017-7533}.
 
+\bibitem{freebsdcve}
+{Freebsd CVE-2009-3527}.
+\newblock \url{http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2009-3527}.
+
 \bibitem{uselib-bug-12791}
 Linux kernel bug on uselib().
 \newblock \url{http://osvdb.org/show/osvdb/12791}.
@@ -44,6 +48,26 @@ Mysql bug 14747.
 Apache web server.
 \newblock \url{http://www.apache.org}, 2012.
 
+\bibitem{bishop1996checking}
+M.~Bishop, M.~Dilger, et~al.
+\newblock Checking for race conditions in file accesses.
+\newblock {\em Computing systems}, 2(2):131--152, 1996.
+
+\bibitem{taskrecycling:ppopp90}
+A.~Dinning and E.~Schonberg.
+\newblock An empirical comparison of monitoring algorithms for access anomaly
+  detection.
+\newblock In {\em Proceedings of the 2nd Symposium on Principles and Practice
+  of Parallel Programming (PPOPP '90)}, pages 1--10, Mar. 1990.
+
+\bibitem{taintdroid:osdi10}
+W.~Enck, P.~Gilbert, B.-G. Chun, L.~P. Cox, J.~Jung, P.~McDaniel, and A.~N.
+  Sheth.
+\newblock {TaintDroid}: an information-flow tracking system for realtime
+  privacy monitoring on smartphones.
+\newblock In {\em Proceedings of the Ninth Symposium on Operating Systems
+  Design and Implementation (OSDI '10)}, pages 1--6, 2010.
+
 \bibitem{libsafe}
 {Libsafe}.
 \newblock \url{http://directory.fsf.org/wiki/Libsafe}.
@@ -63,11 +87,30 @@ S.~Lu, S.~Park, E.~Seo, and Y.~Zhou.
   for Programming Languages and Operating Systems (ASPLOS '08)}, pages
   329--339, Mar. 2008.
 
+\bibitem{sospinfomationflowcontrol}
+A.~Myers and B.~Liskov.
+\newblock A decentralized model for information flow control.
+\newblock In {\em Proceedings of the 16th ACM Symposium on Operating Systems
+  Principles (SOSP '97)}, pages 129--142, 1997.
+
 \bibitem{valgrind:pldi}
 N.~Nethercote and J.~Seward.
 \newblock Valgrind: a framework for heavyweight dynamic binary instrumentation.
 \newblock In {\em Proceedings of the ACM SIGPLAN 2007 Conference on Programming
   Language Design and Implementation (PLDI '07)}, pages 89--100, June 2007.
+
+\bibitem{lift:micro06}
+F.~Qin, C.~Wang, Z.~Li, H.-s. Kim, Y.~Zhou, and Y.~Wu.
+\newblock Lift: A low-overhead practical information flow tracking system for
+  detecting security attacks.
+\newblock In {\em MICRO 39: Proceedings of the 39th Annual IEEE/ACM
+  International Symposium on Microarchitecture}, pages 135--148, 2006.
+
+\bibitem{schonberg:pldi89}
+D.~Schonberg.
+\newblock On-the-fly detection of access anomalies.
+\newblock In {\em Proceedings of the ACM SIGPLAN '89 Conference on Programming
+  Language Design and Implementation}, pages 285--297, 1989.
 
 \bibitem{SSDB}
 \url{ssdb.io/}.
@@ -79,10 +122,27 @@ P.~B. Todd~Warszawski.
 \newblock In {\em Proceedings of the 2017 ACM SIGMOD International Conference
   on Management of Data}, pages 5--20. ACM, 2017.
 
+\bibitem{tsafrir2008portably}
+D.~Tsafrir, T.~Hertz, D.~Wagner, and D.~Da~Silva.
+\newblock Portably solving file tocttou races with hardness amplification.
+\newblock In {\em FAST}, volume~8, pages 1--18, 2008.
+
 \bibitem{tsan}
 Threadsanitizer.
 \newblock \url{https://code.google.com/p/data-race-test/wiki/ThreadSanitizer},
   2015.
+
+\bibitem{tsyrklevich2003dynamic}
+E.~Tsyrklevich and B.~Yee.
+\newblock {\em Dynamic detection and prevention of race conditions in file
+  accesses}.
+\newblock PhD thesis, University of California, San Diego, 2003.
+
+\bibitem{wei2005tocttou}
+J.~Wei and C.~Pu.
+\newblock Tocttou vulnerabilities in unix-style file systems: An anatomical
+  study.
+\newblock In {\em FAST}, volume~5, pages 12--12, 2005.
 
 \bibitem{wu2015:collaborative}
 Z.~Wu, K.~Lu, X.~Wang, and X.~Zhou.
@@ -90,11 +150,11 @@ Z.~Wu, K.~Lu, X.~Wang, and X.~Zhou.
 \newblock {\em International Journal of Parallel Programming}, 43(2):260--285,
   2015.
 
-\bibitem{syncfinder:osdi10}
-W.~Xiong, S.~Park, J.~Zhang, Y.~Zhou, and Z.~Ma.
-\newblock Ad hoc synchronization considered harmful.
-\newblock In {\em Proceedings of the Ninth Symposium on Operating Systems
-  Design and Implementation (OSDI '10)}, Oct. 2010.
+\bibitem{yang2016concurrency}
+J.~Yang.
+\newblock Concurrency attacks and defenses.
+\newblock Technical report, The Trustees of Columbia University in the City of
+  New York DUNS 049179401 New York United States, 2016.
 
 \bibitem{con:hotpar12}
 J.~Yang, A.~Cui, S.~Stolfo, and S.~Sethumadhavan.

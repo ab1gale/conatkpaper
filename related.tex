@@ -1,24 +1,29 @@
 \section{Related Work} \label{sec:related}
 
-% TODO
 % Initially from Work by Ruigu
-TOCTOU attacks. Time-Of-Check-to-Time-Of-Use attacks
-[18, 73, 79, 74] target mainly the file interface, and
+
+% TOCTOU attacks
+\textbf{TOCTOU attacks.} Time-Of-Check-to-Time-Of-Use attacks \cite{bishop1996checking,tsyrklevich2003dynamic, tsafrir2008portably,wei2005tocttou}
+target mainly the file interface, and
 leverage atomicity violation on time-of-check (access())
 and time-of-use (open()) of a file to gain illegal file access.
-A prior concurrency attack study [85] elaborates that concurrency
+
+A prior concurrency attack study \cite{yang2016concurrency} elaborates that concurrency
 attacks are much broader and more difficult to track
 than TOCTOU attacks for two main reasons. First, TOCTOU
 mainly causes illegal file access, while concurrency attacks
 can cause a much broader range of security vulnerabilities,
-ranging from gaining root privileges [7], injecting malicious
-code [6], to corrupting critical memory [1]. Second, concurrency
+ranging from gaining root privileges \cite{uselib-bug-12791} , injecting malicious
+code \cite{freebsdcve}, to corrupting critical memory \cite{apache-bug-25520}. Second, concurrency
 attacks stem from miscellaneous memory accesses, and
 TOCTOU stem from file accesses, thus handling concurrency
 attacks is much more difficult than TOCTOU.
-Sequential security techniques. Defense techniques for sequential
-programs are well studied, including taint tracking
-[28, 62, 55, 56], anomaly detection [27, 65], address space
+
+% Sequential Security Techniques
+\noindent
+\textbf{Sequential security techniques.} Defense techniques for sequential
+programs are well studied, including taint tracking \cite{taintdroid:osdi10,lift:micro06,sospinfomationflowcontrol,valgrind:pldi}, 
+anomaly detection \cite{taskrecycling:ppopp90,schonberg:pldi89}, address space
 randomization [70], and static analysis [38, 30, 76, 17, 19].
 However, with the presence of multithreading, most existing
 sequential defense tools can be largely weakened or even
@@ -26,7 +31,10 @@ completely bypassed [85]. For instance, concurrency bugs
 in global memory may corrupt metadata tags in metadata
 tracking techniques. Anomaly detection lacks a concurrency
 model to reason about concurrency bugs and attacks.
-Concurrency reliability tools. Various prior systems work
+
+% Concurrency Reliability Tools
+\noindent
+\textbf{Concurrency reliability tools.} Various prior systems work
 on concurrency bug detection [87, 64, 29, 51, 53, 89, 88, 44,
 80], diagnosis [67, 59, 57, 16, 43], and correction [42, 78,
 82, 41]. They focused on concurrency bugs themselves, while
@@ -72,7 +80,10 @@ checking security APIs [71], and verifying the Linux Security
 Module [90]. OWL’s analysis is complementary to these
 approaches; OWL can be further integrated with these approaches
 to track concurrency attacks.
-Symbolic execution. Symbolic execution is an advanced program
+
+% Symbolic Execution
+\noindent
+\textbf{Symbolic execution.} Symbolic execution is an advanced program
 analysis technique that can systematically explore a program’s
 execution paths to find bugs. Researchers have built
 scalable and effective symbolic execution systems to detect
