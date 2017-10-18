@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (MiKTeX 2.9.6350 64-bit) (preloaded format=pdflatex 2017.10.18)  18 OCT 2017 17:42
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (MiKTeX 2.9.6350 64-bit) (preloaded format=pdflatex 2017.10.12)  18 OCT 2017 19:25
 entering extended mode
 **./paper.tex
 (paper.tex
@@ -529,15 +529,20 @@ LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <12> not available
 (Font)              Font shape `OT1/ptm/b/n' tried instead on input line 273.
  (abstract.tex)
 (intro.tex
-Underfull \vbox (badness 1237) has occurred while \output is active []
-
-LaTeX Font Info:    Try loading font information for OMS+ptm on input line 76.
-
-("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\omsptm.fd"
+LaTeX Font Info:    Try loading font information for OMS+ptm on input line 79.
+ ("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\omsptm.fd"
 File: omsptm.fd 
 )
 LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 76.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 79.
+Missing character: There is no â in font ptmr7t!
+Missing character: There is no € in font ptmr7t!
+Missing character: There is no ™ in font ptmr7t!
+
+Underfull \hbox (badness 5036) in paragraph at lines 88--98
+[]\OT1/ptm/m/n/10 Leveraging this model, we de-signed a two-phase
+ []
+
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
@@ -548,14 +553,6 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 Missing character: There is no â in font ptmr7t!
 Missing character: There is no € in font ptmr7t!
 Missing character: There is no ™ in font ptmr7t!
-
-Underfull \hbox (badness 5036) in paragraph at lines 88--98
-[]\OT1/ptm/m/n/10 Leveraging this model, we de-signed a two-phase
- []
-
-Missing character: There is no â in font ptmr7t!
-Missing character: There is no € in font ptmr7t!
-Missing character: There is no ™ in font ptmr7t!
 Missing character: There is no â in font ptmr7t!
 Missing character: There is no € in font ptmr7t!
 Missing character: There is no ™ in font ptmr7t!
@@ -563,6 +560,7 @@ LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10> not available
 (Font)              Font shape `OT1/ptm/b/n' tried instead on input line 121.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/sc' in size <10> not available
 (Font)              Font shape `OT1/ptm/b/sc' tried instead on input line 125.
+
 
 LaTeX Warning: Reference `' on page 2 undefined on input line 137.
 
@@ -603,10 +601,8 @@ LaTeX Warning: Reference `sec:known-attacks' on page 2 undefined on input line
 LaTeX Warning: Reference `sec:unknown-attacks' on page 2 undefined on input lin
 e 24.
 
-[2 <./figures/model.png>]
 LaTeX Font Info:    Try loading font information for OT1+ztmcm on input line 33
 .
-
 ("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\ot1ztmcm.fd"
 File: ot1ztmcm.fd 2000/01/03 Fontinst v1.801 font definitions for OT1/ztmcm.
 )
@@ -644,11 +640,12 @@ LaTeX Font Info:    Font shape `OT1/ptm/bx/sc' in size <8> not available
 LaTeX Font Info:    Font shape `OT1/ptm/bx/sc' in size <9> not available
 (Font)              Font shape `OT1/ptm/b/sc' tried instead on input line 46.
 ) (related.tex
-Underfull \hbox (badness 3281) in paragraph at lines 6--10
-\OT1/ptm/b/n/10 TOCTOU at-tacks. \OT1/ptm/m/n/10 Time-Of-Check-to-Time-Of-Use a
-t-
+Underfull \hbox (badness 2846) in paragraph at lines 5--12
+\OT1/ptm/m/n/10 <<<<<<< HEAD ======= \OT1/ptm/b/n/10 TOC-TOU at-tacks. \OT1/ptm
+/m/n/10 Time-Of-
  []
 
+[2 <./figures/model.png>]
 Missing character: There is no â in font ptmr7t!
 Missing character: There is no € in font ptmr7t!
 Missing character: There is no ™ in font ptmr7t!
@@ -663,17 +660,21 @@ Missing character: There is no ™ in font ptmr7t!
 Missing character: There is no â in font ptmr7t!
 Missing character: There is no € in font ptmr7t!
 Missing character: There is no ™ in font ptmr7t!
+Missing character: There is no â in font ptmr7t!
+Missing character: There is no € in font ptmr7t!
+Missing character: There is no ™ in font ptmr7t!
+Missing character: There is no â in font ptmr7t!
+Missing character: There is no € in font ptmr7t!
+Missing character: There is no ™ in font ptmr7t!
+) (conclusion.tex
+Underfull \hbox (badness 1320) in paragraph at lines 87--1
+\OT1/ptm/m/n/10 pro-gram anal-y-sis tech-nique that can sys-tem-at-i-cally ex-
+ []
+
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [3 <./figures/archi.png>]
-Missing character: There is no â in font ptmr7t!
-Missing character: There is no € in font ptmr7t!
-Missing character: There is no ™ in font ptmr7t!
-Missing character: There is no â in font ptmr7t!
-Missing character: There is no € in font ptmr7t!
-Missing character: There is no ™ in font ptmr7t!
-) (conclusion.tex) (paper.bbl
+ [3 <./figures/archi.png>]) (paper.bbl
 LaTeX Font Info:    Try loading font information for OT1+pcr on input line 5.
 
 ("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\ot1pcr.fd"
@@ -735,17 +736,13 @@ Underfull \hbox (badness 10000) in paragraph at lines 131--134
 com / p /
  []
 
-
-Underfull \vbox (badness 1377) has occurred while \output is active []
-
- [4])
-
+[4]) 
 AED: lastpage setting LastPage
 - LAST -
-Extra skip:10.91002pt
-Left:77.0pt/1.85844pt
-Right:67.94843pt/0.0pt
-Output:76.97421pt
+Extra skip:25.0pt
+Left:55.0pt/1.94843pt
+Right:31.94843pt/0.0pt
+Output:54.97421pt
 [5] (paper.aux)
 
 LaTeX Warning: There were undefined references.
@@ -756,7 +753,7 @@ LaTeX Warning: There were multiply-defined labels.
  ) 
 Here is how much of TeX's memory you used:
  7872 strings out of 493323
- 111506 string characters out of 3139062
+ 111506 string characters out of 3139039
  213241 words of memory out of 3000000
  11192 multiletter control sequences out of 15000+200000
  53737 words of font info for 109 fonts, out of 3000000 for 9000
@@ -771,7 +768,7 @@ courier/ucrr8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/helvetic/uhvr8a
 Files/MiKTeX 2.9/fonts/type1/urw/times/utmbi8a.pfb><C:/Program Files/MiKTeX 2.9
 /fonts/type1/urw/times/utmr8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/
 times/utmri8a.pfb>
-Output written on paper.pdf (5 pages, 216071 bytes).
+Output written on paper.pdf (5 pages, 215982 bytes).
 PDF statistics:
  60 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
