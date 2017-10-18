@@ -14,73 +14,73 @@ severe consequences such as execution order violation, wrong output and program 
 
 %2. Recent study - con attacks - structural , consequence, [in-explicit severer]
 Recent studies\cite{acidrain:sigmod17,con:hotpar12} show rise of concerns about \emph{concurrency attacks}.
-Just like sequential bugs lead to attacks, concurrency bugs also lead to concurrency attacks. 
-By triggering concurrency bugs and employing subtle inputs, 
+By triggering concurrency bugs, 
 hackers may leverage the corrupted memory to conduct  
 attacks including privilege escalations\cite{uselib-bug-12791,mysql-bug-14747}, hijacking code execution\cite{berend-jan-wever-msiexploit}, bypassing security checks\cite{xwindows,theotheriphone,theotheriphone-2011}, 
 and breaking database integrity\cite{acidrain:sigmod17}.
-These vulnerabilities often hide in large amount of concurrency bug reports. 
-For example, bug information leveraged by a xxx attack is hidden in 1000 race reports 
-produced by TSAN\cite{tsan}, a famous and widely used data race detector. 
-%Also, to construct concurrency attacks, despite the inputs of leveraged concurrency bugs, 
-%attacker may need other crafted inputs to exploit the vulnerabilities. 
-***Also, despite threads conducting concurrency bugs, 
-behaviors of another thread may also be affected when data race bugs infecting shared memory (\eg heap overflow)\cite{apache-bug-25520,cve:2017-7533}. ***
+These vulnerabilities are often hidden in concurrency bugs and implicit regarding program behaviors. 
+For example, a privilege escalation attack may cause no outrageous effect, 
+but possess a permanent security hole hiding in the system.
+Also, despite the inputs that induce concurrency bugs, 
+concurrency attacks may need other crafted inputs for exploitation of the vulnerabilities. 
+
 
 
 %3. Unfortunately, most extant work -- detect bug, corruption 
 %   Our study - old bug - attack
 %   However in danger
 %   Sigmod 
-Unfortunately, although great progress has been made to detect and replay severe bugs(\eg ConMem\cite{conmem:asplos10}), 
-extant work still lacks exploration of concurrency attacks from enormous concurrency bugs. Our study over several known concurrency 
-bugs\cite{apache-bug-25520, apache-bug-46215} shows that even concurrency bugs have been successfully detected and reported, 
+Unfortunately, although great progress has been made, there does not exist a general model and practical tools  
+for understanding and detecting concurrency attacks.
+Our study over known concurrency 
+bugs\cite{apache-bug-25520, apache-bug-46215} shows that 
+even concurrency bugs have been successfully detected and reported, 
 professionals may still lack knowledge about how severe consequences these bugs may cause. 
 For instance, \emph{apache-25520}\cite{apache-bug-25520} has been 
 reported over years and well studied by researchers\cite{lu:concurrency-bugs}.  
-We are the first to exploit a new heap overflow attack leveraging on this bug and break the HTML integrity.  
+We are the first to exploit a new heap overflow attack leveraging on this bug and break the HTML integrity. 
+Knowledge and detection of concurrency attacks is of crucial importance. 
 
 %4. Two major challenges : 
 %a. concurrent bug detectors (justify) 
 %b. other input for attack
-We studied \nattacks attacks and find two major challenges for exploring concurrency attacks from concurrency bugs. 
+We studied \nattacks attacks and find two major challenges for detecting concurrency attacks. 
 First, concurrency attacks may be implicit and hidden in common concurrency bugs. 
-Existing concurrent bug detectors focus on bug happening itself. 
+Existing concurrent bug detectors may not 
+analyze whether a concurrency bug is vulnerable and exploitable.  
 ConMem\cite{conmem:asplos10} first propose to 
-consider concurrency bugs that may cause severe consequences (\eg program crash)
-and ConSeq\cite{conseq:asplos11} uses severe consequence report to help diagnose concurrency bugs. 
-However, our observation shows that explicit error (\eg program crash) is not necessary for concurrency 
-attacks. Some concurrency bugs (\eg \emph{xxx-xxx}) may not cause program crash or interrupted, 
-but attackers may still leverage them and conduct attacks with crafted input. 
+consider concurrency bugs that may cause severe consequences (\eg program crash), 
+but our observation shows that explicit error (\eg program crash) is not necessary for concurrency 
+attacks.
+ConSeq\cite{conseq:asplos11} care about severe consequences and do intra-procedure analysis to help diagnose concurrency bugs. 
+However, propagation path ... .
 %Here the propagation path?
 %
-???-Worse still, crash bugs may even lead to more severe vulnerabilities. 
+Worse still, crash bugs may even lead to more severe vulnerabilities. 
 In \emph{CVE-2017-7533} conducted by our team, although the data race primarily causes kernel crash, 
 we crafted the input and successfully conduct a privilege escalation attack without crashing the kernel.
 Current concurrency bug detecting tools are not designed to analyze this kind of latent vulnerabilities, 
 and hence may direct wrong level of warnings towards the bugs.  
 
 
-Second, extant work ignores indicating the \emph{victim thread} of concurrency attacks.
-A concurrency bug may become much more vulnerable when attackers employee another thread to construct 
-their attacks. 
-In CVE-2017-7533, we do not only leverage two threads to trigger a data race and construct kernel heap overflow, 
-but also require another \emph{victim thread} to lay the target structure on the same heap. 
-By crafting inputs and corrupting the target structure, we finally achieve arbitrary code execution and get a root shell. 
-Automatically indicating the victim thread would be of vital helpful for developers to better understand the latent vulnerabilities.
-For example, in the Apache-25520 case, after knowing about information of victim thread, 
-we successfully increased the severity of the bug and conducted an integrity violation.
+Second, extant work ignores indicating extra inputs to conduct concurrency attacks.
+A concurrency bug may become much more vulnerable when attackers 1.craft inputs that trigger the bug; 
+2.employee another input running on victim threads to construct their attacks. 
+In CVE-2017-7533, we do not only leverage two crafted inputs running on two threads to trigger a data race and construct kernel heap overflow, 
+but also require another inputs running on \emph{victim thread} to lay the target structure on the same heap. 
+By corrupting the target structure, we finally achieve arbitrary code execution and get a root shell. 
+Automatically indicating the inputs that construct concurrency attacks 
+would be of vital helpful for developers to better understand the latent vulnerabilities.
+%For example, in the Apache-25520 case, after knowing about information of victim thread, 
+%we successfully increased the severity of the bug and conducted an integrity violation.
 
 %5. New model for general attacks [] -- *vulnerability window 
 
-To address the two challenges, we introduced a new model(\S\ref{sec:model}) 
-that explains most concurrency attacks we studied. 
+To address the two challenges, we present a general model(\S\ref{sec:model}) 
+for understanding concurrency attacks.
 The model breaks down concurrency attacks into three stages: bug happening, 
 bug-to-attack propagation, and attack happening. In this model, 
-the two key things for exploring concurrency attacks is 
-the analysis of bug-to-attack propagation and definition of attack happening, 
-while bug happening has been well studied and detected. Our studies show propagation 
-includes data flow and  
+a concurrency bugs is triggered by two 
 
 
 
@@ -118,11 +118,11 @@ reasonable for in-house testing.
 This paper makes two major contributions:
 
 \begin{tightenum}
-\item \textbf{A general model explains happening and exploiting of concurrency attacks.} 
+\item \textbf{A general model for understanding concurrency attacks.} 
 This model explains most concurrency attacks in wild and 
 providing two major direction for detecting concurrency attacks. 
 	
-\item \textbf{A general concurrency attack detection framework and its implementation, \xxx.} 
+\item \textbf{A practical concurrency attack detection tool and its implementation, \xxx.} 
 \xxx can easily employ existing concurrent bug detectors and vulnerability analyzer 
 to improve the accuracy and ??? of detection.
 	
