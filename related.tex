@@ -15,7 +15,7 @@ mainly causes illegal file access, while concurrency attacks
 can cause a much broader range of security vulnerabilities,
 ranging from gaining root privileges \cite{uselib-bug-12791} , injecting malicious
 code \cite{freebsdcve}, to corrupting critical memory \cite{apache-bug-25520}. Second, concurrency
-attacks stem from miscellaneous memory accesses, and
+attacks stem from miscellaneous kinds of memory access, and
 TOCTOU stem from file accesses, thus handling concurrency
 attacks is much more difficult than TOCTOU.
 
@@ -24,47 +24,51 @@ attacks is much more difficult than TOCTOU.
 \textbf{Sequential security techniques.} Defense techniques for sequential
 programs are well studied, including taint tracking \cite{taintdroid:osdi10,lift:micro06,sospinfomationflowcontrol,valgrind:pldi}, 
 anomaly detection \cite{taskrecycling:ppopp90,schonberg:pldi89}, address space
-randomization [70], and static analysis [38, 30, 76, 17, 19].
+randomization \cite{aslr-fail:ccs04}, and static analysis \cite{seth:pldi,engler:vmcai,wagner:intrusion,coverity:cacm,klee:osdi08}.
+
 However, with the presence of multithreading, most existing
 sequential defense tools can be largely weakened or even
-completely bypassed [85]. For instance, concurrency bugs
+completely bypassed \cite{con-tr}. For instance, concurrency bugs
 in global memory may corrupt metadata tags in metadata
-tracking techniques. Anomaly detection lacks a concurrency
+tracking techniques. Anomaly detection is lack of a concurrency
 model to reason about concurrency bugs and attacks.
 
 % Concurrency Reliability Tools
 \noindent
 \textbf{Concurrency reliability tools.} Various prior systems work
-on concurrency bug detection [87, 64, 29, 51, 53, 89, 88, 44,
-80], diagnosis [67, 59, 57, 16, 43], and correction [42, 78,
-82, 41]. They focused on concurrency bugs themselves, while
-OWL focuses on the security consequences of concurrency
+on concurrency bug detection \cite{yu:racetrack:sosp,savage:eraser,racerx:sosp03,lu:muvi:sosp,avio:asplos06,conmem:asplos10,conseq:asplos11,kasikci2013racemob,wester:parallelizing:asplos13}, diagnosis \cite{racefuzzer:pldi08,ctrigger:asplos09,atomfuzzer:fse08,attariyan2012x,failure:sketch:sosp15}, and correction \cite{deadlock-immunity:osdi08,gadara:osdi08,wu:loom:osdi10,automated:osdi}. They focus on concurrency bugs themselves, while
+OWL focuses on security related consequences of concurrency
 bugs. Therefore, these systems are complementary to OWL.
-Conseq [88] detects harmful concurrency bugs by analyzing
-its failure consequence. Its key observation is that concurrency
-bugs and the bugs’ failure sites are usually within a
+
+Conseq \cite{conseq:asplos11} detects harmful concurrency bugs by analyzing
+their failure consequence. Its key observation is that concurrency
+bugs and those bugs' failure sites are usually within a
 short control and data flow propagation distance (e.g., within
-the same function). Concurrency attacks targeted in OWL
+the same function). Concurrency attacks(targets of OWL)
 usually exploit corrupted memory that resides in different
 functions, thus Conseq is inadequate for concurrency attacks.
-Conseq’s proactive harmful schedule exploration technique
+Though, Conseq’s proactive harmful schedule exploration technique
 will be useful for OWL to trigger more vulnerable schedules.
-Static vulnerability detection tools. There are already a variety
-of static vulnerability detection approaches [49, 84, 31,
-15, 71, 90]. These approaches fall into two categories based
+
+% Static Vulnerability Detection Tools
+\noindent
+\textbf{Static vulnerability detection tools.} There are already a variety
+of static vulnerability detection approaches \cite{livshits05finding,yamaguchi2014modeling,felmetsger2010toward,felmetsger2010toward,srivastava2011security,zhang:usenix:sec02}, which fall into two categories based
 on whether they target general or specific programs.
-The first category [49, 84] targets general programs and
-their approaches have been shown to find severe vulnerabilities
+
+The first category \cite{livshits05finding,yamaguchi2014modeling} targets general programs and
+these approaches have been shown to find severe vulnerabilities
 in large code. However, these pure static analyses may
 not be adequate to cope with concurrency attacks. Benjamin
-et al. [49] leverages pointer analysis to detect data flows from
+et al. \cite{livshits05finding} leverage pointer analysis to detect data flows from
 unchecked inputs to sensitive sites. This approach ignores
 control flow and thus it is not suitable to track concurrency
-attacks like the Libsafe one in §4.3. Yamaguchi et al. [84]
+attacks like the Libsafe one in §4.3\textbf{[TOCHECK]}. Yamaguchi et al. \cite{yamaguchi2014modeling}
 did not incorporate inter-procedural analysis and thus is not
 suitable to track concurrency attacks either. Moreover, these
 general approaches are not designed to reason about concurrent
-behaviors (e.g., [84] can not detect data races).
+behaviors (e.g., \cite{yamaguchi2014modeling} can not detect data races).
+
 OWL belongs to the first category because it targets general
 programs. Unlike the prior approaches in this category,
 OWL incorporates concurrency bug detectors to reason about
@@ -72,12 +76,13 @@ concurrent behaviors, and OWL’s consequence analyzer integrates
 critical dynamic information (i.e., call stacks) into
 static analysis to enable comprehensive data-flow, control-
 flow, and inter-procedural analysis features.
-The second category [31, 15, 71, 90] lets static analysis
-focus on specific behaviors (e.g., APIs) in specific programs
+
+The second category \cite{felmetsger2010toward,arzt2014flowdroid,srivastava2011security,zhang:usenix:sec02} makes static analysis
+focused on specific behaviors (e.g., APIs) in specific programs
 to achieve scalability and accuracy. These approaches check
-web application logic [31], Android applications [15], cross
-checking security APIs [71], and verifying the Linux Security
-Module [90]. OWL’s analysis is complementary to these
+web application logic \cite{felmetsger2010toward}, Android applications \cite{arzt2014flowdroid}, cross
+checking security APIs \cite{srivastava2011security}, and Linux Security
+Module \cite{zhang:usenix:sec02}. OWL’s analysis is complementary to these
 approaches; OWL can be further integrated with these approaches
 to track concurrency attacks.
 
@@ -87,10 +92,10 @@ to track concurrency attacks.
 analysis technique that can systematically explore a program’s
 execution paths to find bugs. Researchers have built
 scalable and effective symbolic execution systems to detect
-software bugs [34, 68, 33, 35, 19, 86, 20, 23, 21, 63], block
-malicious inputs [24], preserve privacy in error reports [22],
-and detect programming rule violations [25]. Specifically,
-UCKLEE [63] has been shown to effectively detect hundreds
+software bugs \cite{dart:pldi,cute:fse,godefroid:grammar-fuzzing,godefroid:whitebox-fuzzing,klee:osdi08,yang:malicious-disk:oakland06,cadar:exe:ccs06,s2e:hotdep09,taas:socc10,ramos2015under}, block
+malicious inputs \cite{costa:openbsd}, preserve privacy in error reports \cite{castro:bug-report-privacy},
+and detect programming rule violations \cite{woodpecker:asplos13}. Specifically,
+UCKLEE \cite{ramos2015under} has been shown to effectively detect hundreds
 of security vulnerabilities in widely used programs. Symbolic
 execution is orthogonal to OWL; it can augment OWL’s input
 hints by automatically generating concrete vulnerable inputs.

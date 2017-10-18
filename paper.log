@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (MiKTeX 2.9.6350 64-bit) (preloaded format=pdflatex 2017.10.18)  18 OCT 2017 17:42
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (MiKTeX 2.9.6350 64-bit) (preloaded format=pdflatex 2017.10.18)  18 OCT 2017 20:26
 entering extended mode
 **./paper.tex
 (paper.tex
@@ -652,14 +652,8 @@ t-
 Missing character: There is no â in font ptmr7t!
 Missing character: There is no € in font ptmr7t!
 Missing character: There is no ™ in font ptmr7t!
-Missing character: There is no â in font ptmr7t!
-Missing character: There is no € in font ptmr7t!
-Missing character: There is no ™ in font ptmr7t!
 Missing character: There is no Â in font ptmr7t!
 Missing character: There is no § in font ptmr7t!
-Missing character: There is no â in font ptmr7t!
-Missing character: There is no € in font ptmr7t!
-Missing character: There is no ™ in font ptmr7t!
 Missing character: There is no â in font ptmr7t!
 Missing character: There is no € in font ptmr7t!
 Missing character: There is no ™ in font ptmr7t!
@@ -667,6 +661,9 @@ Missing character: There is no ™ in font ptmr7t!
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [3 <./figures/archi.png>]
+Missing character: There is no â in font ptmr7t!
+Missing character: There is no € in font ptmr7t!
+Missing character: There is no ™ in font ptmr7t!
 Missing character: There is no â in font ptmr7t!
 Missing character: There is no € in font ptmr7t!
 Missing character: There is no ™ in font ptmr7t!
@@ -723,30 +720,44 @@ Underfull \hbox (badness 1077) in paragraph at lines 32--34
 db . org /
  []
 
+[4]
+Underfull \hbox (badness 1033) in paragraph at lines 192--196
+\OT1/ptm/m/it/9 fourth ACM sym-po-sium on op-er-at-ing sys-tems prin-ci-ples\OT
+1/ptm/m/n/9 ,
+ []
 
-Underfull \hbox (badness 10000) in paragraph at lines 72--74
+
+Underfull \hbox (badness 10000) in paragraph at lines 198--200
 []\OT1/ptm/m/n/9 Libsafe.  $\OT1/pcr/m/n/9 http : / / directory . fsf . org / w
 iki /
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 131--134
+Underfull \vbox (badness 1895) has occurred while \output is active []
+
+ [5]
+Underfull \hbox (badness 10000) in paragraph at lines 332--335
 []\OT1/ptm/m/n/9 Threadsanitizer.  $\OT1/pcr/m/n/9 https : / / code . google . 
 com / p /
  []
 
 
+Underfull \hbox (badness 3701) in paragraph at lines 361--366
+[]\OT1/ptm/m/n/9 B. Wester, D. De-vec-sery, P. M. Chen, J. Flinn, and
+ []
+
+
 Underfull \vbox (badness 1377) has occurred while \output is active []
 
- [4])
+)
 
 AED: lastpage setting LastPage
 - LAST -
-Extra skip:10.91002pt
-Left:77.0pt/1.85844pt
-Right:67.94843pt/0.0pt
-Output:76.97421pt
-[5] (paper.aux)
+Extra skip:4.16556pt
+Left:409.0pt/1.85844pt
+Right:406.69289pt/0.0pt
+Output:410.84644pt
+[6] (paper.aux)
 
 LaTeX Warning: There were undefined references.
 
@@ -755,13 +766,13 @@ LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 7872 strings out of 493323
- 111506 string characters out of 3139062
- 213241 words of memory out of 3000000
- 11192 multiletter control sequences out of 15000+200000
+ 7992 strings out of 493323
+ 114434 string characters out of 3139062
+ 211881 words of memory out of 3000000
+ 11312 multiletter control sequences out of 15000+200000
  53737 words of font info for 109 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 39i,10n,39p,772b,442s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 62i,10n,55p,772b,524s stack positions out of 5000i,500n,10000p,200000b,50000s
 {C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/base/8r.enc}<C:/Program Files/Mi
 KTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program Files/MiKTeX 2.9
 /fonts/type1/public/amsfonts/cm/cmtt10.pfb><C:/Program Files/MiKTeX 2.9/fonts/t
@@ -771,9 +782,9 @@ courier/ucrr8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/helvetic/uhvr8a
 Files/MiKTeX 2.9/fonts/type1/urw/times/utmbi8a.pfb><C:/Program Files/MiKTeX 2.9
 /fonts/type1/urw/times/utmr8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/
 times/utmri8a.pfb>
-Output written on paper.pdf (5 pages, 216071 bytes).
+Output written on paper.pdf (6 pages, 225953 bytes).
 PDF statistics:
- 60 PDF objects out of 1000 (max. 8388607)
+ 63 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  11 words of extra memory for PDF output out of 10000 (max. 10000000)
 
