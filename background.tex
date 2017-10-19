@@ -23,21 +23,33 @@ types of severe security consequences, including privilege escalations\cite{usel
 malicious code injections \cite{msiexploit},  
 bypassing security authentications\cite{cve-2010-0923, cve-2008-0034, cve-2010-1754}
 , and breaking database integrity\cite{acidrain:sigmod17}. 
-Some concurrency bugs 
-Current concurrency bugs 
+Concurrency attacks may do not cause 
 
+Current concurrency bug detection tools cannot well indicate whether a concurrency bug is vulnerable and exploitable.
+...Conseq, acid rain.
 
 Second, concurrency bugs and attacks can often be easily
-triggered crafted program inputs. 
-%For instance, attackers
-%can use inputs to control the physical timings of disk
-%IO and program loops and trigger concurrency bugs with a
-%small number of re-executions. 
+triggered by crafted program inputs, and consequences may 
+become much more severe when attacks involves extra inputs.  
+For instance, attackers
+can use inputs to control the physical timings of disk
+IO and program loops and trigger concurrency bugs with a
+small number of re-executions. 
 
-More ever, attack - instruction
+Current tools cannot successfully indicate ... .
+
 
 
 \subsection{Bug-to-Attack Propagation}
+
+Mayhem\cite{mayhem:cmu} is the first to propose detection 
+exploitable attacks from sequential bugs. It employees a hybrid 
+approach of conclic and symbolic execution and achieves automatically 
+exploiting vulnerabilities. 
+
+However, concurrency bugs is different from sequential bugs. 
+First, concurrency bugs is triggered randomly and ... .
+Second...
 
 
 
