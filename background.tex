@@ -2,23 +2,36 @@
 
 \subsection{Concurrency Bug}
 
+Concurrency bugs in multi-threaded program is common and caused great loss in real world. 
+Non-deadlock concurrency bugs 
+%includes data races\cite{datacollider:osdi10, savage:eraser, yu:racetrack:sosp}, 
+atomicity violations\cite{}, order violations\cite{} and others by extant studies\cite{lu:concurrency-bugs,conmem:asplos10}. 
+A extant work exclude data race as concurrency bug pattern 
+because data race does not certainly cause a concurrency bug\cite{lu:concurrency-bugs} and many data races are benign races. 
+However, our observation shows that data race is necessary for the attacks we studied, 
+although the bugs can be categorized to atomicity violation or order violation. 
+And also, current race detectors can well readily detect the bug happening that causes attacks.
+
+??? Here why data race detector? How about atomic violation detector? Order violation detector?
+ 
 \subsection{Concurrency Attack}
-Extant studies \cite{con:hotpar12, acidrain:sigmod17}  concurrency 
-attacks into .. 
-concurrency bugs and made three major findings on concurrency
-attacks. First, concurrency attacks make much more severe threats:
-35 of the bugs can corrupt critical memory and cause four
-types of severe security consequences, including privilege escalations [7, 10],
-malicious code injections [8], and bypassing security authentications
-[4, 3, 5].
+Extant studies \cite{con:hotpar12, acidrain:sigmod17} show rise of concurrency 
+attacks. We conclude two main features for concurrency attacks comparing to concurrency bugs. 
+First, concurrency attacks make much more severe threats:
+concurrency attacks can corrupt critical memory and cause four
+types of severe security consequences, including privilege escalations\cite{uselib-bug-12791, mysql-bug-24988},
+malicious code injections \cite{msiexploit},  bypassing security authentications\cite{cve-2010-0923, cve-2008-0034, cve-2010-1754}
+, and breaking database integrity\cite{acidrain:sigmod17}. 
+Current concurrency bugs 
+
+
 Second, concurrency bugs and attacks can often be easily
 triggered via subtle program inputs. For instance, attackers
 can use inputs to control the physical timings of disk
 IO and program loops and trigger concurrency bugs with a
-small number of re-executions. Third, compared to traditional
-TOCTOU attacks, which stem from corrupted file accesses,
-handling concurrency attacks is much more difficult because
-they stem from corrupted, miscellaneous memory accesses.
+small number of re-executions. 
+
+More ever, attack - instruction
 
 
 \subsection{Bug-to-Attack Propagation}
