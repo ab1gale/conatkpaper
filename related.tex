@@ -2,22 +2,28 @@
 
 % Initially from Work by Ruigu
 
-% TOCTOU attacks
-\textbf{TOCTOU attacks.} Time-Of-Check-to-Time-Of-Use attacks \cite{bishop1996checking,tsyrklevich2003dynamic, tsafrir2008portably,wei2005tocttou}
+% TOCTTOU attacks
+\textbf{TOCTTOU attacks.} Time-Of-Check-to-Time-Of-Use attacks \cite{bishop1996checking,tsyrklevich2003dynamic, tsafrir2008portably,wei2005tocttou}
 target mainly the file interface, and
 leverage atomicity violation on time-of-check (access())
-and time-of-use (open()) of a file to gain illegal file access.
+and time-of-use (open()) of a file to gain illegal file access. 
 
 A prior concurrency attack study \cite{yang2016concurrency} elaborates that concurrency
 attacks are much broader and more difficult to track
-than TOCTOU attacks for two main reasons. First, TOCTOU
+than TOCTTOU attacks for two main reasons. First, TOCTTOU
 mainly causes illegal file access, while concurrency attacks
 can cause a much broader range of security vulnerabilities,
 ranging from gaining root privileges \cite{uselib-bug-12791} , injecting malicious
 code \cite{freebsdcve}, to corrupting critical memory \cite{apache-bug-25520}. Second, concurrency
 attacks stem from miscellaneous kinds of memory access, and
-TOCTOU stem from file accesses, thus handling concurrency
-attacks is much more difficult than TOCTOU.
+TOCTTOU stem from file accesses, thus handling concurrency
+attacks is much more difficult than TOCTTOU.
+
+Another prior study \cite{concurrency:woot07} further
+defined two more kinds of vulnerabilities: One is \textbf{TOATTOU}(Time-Of-Check-to-Time-Of-Use),
+in which the audit log diverges due to non-atomicity so that attackers could mask activities to avoid IDS triggering; 
+The other is \textbf{TORTTOU}(Time-Of-Check-to-Time-Of-Use), unique to system call wrappers, in which attackers could 
+modify system call arguments after the wrapper has replaced the arguments but before the kernel accesses them.
 
 % Sequential Security Techniques
 \noindent
