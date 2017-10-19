@@ -85,16 +85,13 @@ a concurrency bugs is triggered by bug-induced inputs and one input
 
 
 %6. Leveraging this model, framework - address two challenges.
-Leveraging this model, we designed a two-phase framework(\S\ref{sec:archi}), \xxx, for detecting concurrency attacks. 
+Leveraging this model, we designed a practical, scalable and inter-procedural concurrency 
+attack detection framework(\S\ref{sec:archi}), \xxx. 
+The framework contain two phases.
 %7. Two phase. 
 The first phase is \emph{concurrency analyzer} to analyze bug-to-attack propagations. 
-Our study found that most vulnerable races are already included in the race detectors’ reports, 
-and concurrency attacks sites are often explicit in program code.
-Therefore, we can perform static analysis
-on only the data and control flow propagations between the
-bug reports and the potential attack sites, then we can collect
-relevant call stacks and branch statements as the potentially
-vulnerable input hints.
+We easily employ existing race detectors, and design a benign schedule reducer to reduce race reports(\S\ref{label}). 
+Then we 
 
 The second phase is \emph{concurrency fuzzer?} to ... .
 

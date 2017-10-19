@@ -1,2 +1,317 @@
-\section{\xxx's Framework} \label{sec:framework}
+\section{Framework} \label{sec:framework}
 
+\subsection{Integrate Concurrency Bug Detectors}
+
+
+\xxx has integrated two popular race detectors: \ski for
+Linux kernels and \tsan for application programs. To integrate \xxx's
+algorithm (\S\ref{sec:algo}) with concurrency bug detectors, two 
+elements are necessary from the detectors: the \v{load} instruction that reads 
+the bug's corrupted memory and the instruction's call stack.
+
+% How to work with diverse detection tools. How to parse the bug reports
+% from detection tools. How to parse call stacks and 
+% line numbers.
+
+% For SKI race detection hacking:
+\ski's default detection policy is inadequate to our tool because it only reports the
+pair of instructions at the moment when race happens. This policy incurs two
+issues for our integration. First, the pair of instructions could both be write
+instructions, which does not match the algorithm's input format. Second, it is
+essential to provide to the algorithm an as detailed call stack, which reads 
+from the corrupted racy variable, as possible.
+
+%TBD: where is the watching technique of \ski?
+We modified \ski's race detection policy as follows. After a race happens, the
+physical memory address of the variable will be added to a \ski watch list,
+marking such variable as corrupted. All the call stacks of the following read to
+the watched variable will be printed. If a write to a watched variable occurs,
+such write sanitizes the corrupt value and removes the variable from the watch
+list. In this way, we can catch all the call stacks of potential problematic 
+use of racy variables. The final race report will show all the stacks of the 
+reading thread.
+% Note that we use physical address instead of 
+% virtual address to avoid the
+% problem where the variable is shared between different processes and mapped to
+% different virtual addresses.
+% 
+
+% Compile kernel stack for analyzer.
+Another issue for \xxx to work with kernels is that \ski lacks call stack 
+information. We configure Linux kernel with the CONFIG\_FRAME\_POINTER option 
+enabled. Given a dump of the kernel stack and the values of the program counter 
+and frame pointer, we were able to iterate the stack frames and constructed call 
+stacks.
+
+
+\subsection{Reduce Benign Schedule} \label{sec:staticanalysis}
+
+Developers use semaphore-like adhoc synchronizations, where one thread is
+busy waiting on a shared variable until another thread sets this variable to be
+``true". This type of adhoc synchronizations couldn't be recognized by \tsan or 
+\ski and caused many false positives.
+
+\xxx uses static analysis to detect these synchronizations in two steps. First, 
+by taking the race reports from detectors, it sees if the ``read" instruction 
+is in a loop. Then, it conducts a intra-procedural forward data and control 
+dependency analysis to find the propagation of the corrupted variable. If \xxx 
+encounters a branch instruction in the propagation chain, it checks if this 
+branch instruction can break out of the loop. Last, it checks if the ``write'' 
+instruction of the instruction assigns a constant to the variable. If so, \xxx 
+tags this report as an ``adhoc sync".
+
+Compared to the prior static adhoc sync identification 
+method SyncFinder~\cite{syncfinder:osdi10}, which finds the 
+matching ``read'' and ``write'' instruction by statically searching program 
+code, our approach leverages the actual runtime information from the race 
+reports, so ours are much simpler and more precise.
+% Evaluation confirmed that this filter can filter out 
+% busy looping synchronization with a precision of 100\% by our manual inspection.
+
+\xxx's dynamic race verifier checks whether the reduced race reports 
+are indeed real races. It also generates security hints for the 
+following analysis. The verifier is lightweight because it is built on top of 
+the \lldb debugger. We find that a good way to trigger a data race is to catch 
+it ``in the racing moment". The verifier sets thread specific breakpoints 
+indicated by \tsan race reports. ``Thread specific" means when the breakpoint 
+is triggered, we only halt that specific thread instead of the whole program. 
+The rest of the threads are still able to run. In this way, we can actually 
+catch the race when both of the racing instructions are reached by different 
+threads and are accessing the same address.
+
+
+For each run, \xxx's dynamic filter verifies one race. Once a data race is 
+verified, the verifier goes one step further. It prints the following dynamic
+information as security hints including, the racing instructions from source
+code, the value they're about to read and write and the type of the variable
+that these instructions are about to read or write. These hints show whether a 
+NULL pointer difference can be triggered or an uninitialized data can be read 
+because of the race.
+
+It is possible that due to the suspension of threads, the program goes into a 
+livelock state before verifying any data races. We resolve this livelock state
+by temporarily releasing one of the currently triggered breakpoints. 
+
+
+
+Previous works~\cite{racefuzzer, conbreak, conpredicates} adopt the same core
+idea of “thread specific breakpoints” and
+data race verification. \xxx's dynamic race verifier provides a lightweight,
+general, easy to use way (integrated with existing debugger)
+in verifying “potentially” harmful data races and their consequences.
+Compared with RaceFuzzer~\cite{racefuzzer}, \xxx's verifier achieves the goal 
+without requiring heavyweight Java instrumentation. Compared with
+ConcurrentBreakpoint~\cite{conbreak} and ConcurrentPredicate~\cite{conpredicates},
+we require no code annotations and importing libraries.
+
+Overall, \xxx's dynamic filter makes developers be less dependent on 
+the particular front end race detector, because no matter how many false 
+positive the front end race detector generates, this verifier will make sure 
+the end result is accurate.
+% Our tool is sound.
+
+% To achieve soundness, \xxx's verifier trades off completeness.
+There are two cases that could cause \xxx's race verifier to miss real races. First, if the 
+race detector doesn't detect the race upfront, the verifier won't report the 
+race either. Second, depending on runtime effects (\eg, schedules), some races 
+can't be reliably reproduced with 100\% success rate~\cite{conpredicates}.
+
+
+\subsection{Static Analysis}
+
+\begin{algorithm}[t]
+	
+	\DontPrintSemicolon
+	
+	%\SetCommentSty{textrm}
+	
+	\small
+	
+	\SetCommentSty{textrm}
+	
+	\SetKwInOut{Input}{Input}\SetKwInOut{Output}{Global}
+	\Input{program $prog$, start instruction $si$, $si$ call stack $cs$}
+	\Output{corrupted instruction set $crptIns$, vulnerability set $vuls$}
+	
+	\SetKwBlock{Titlea}{DetectAttack($prog$, $si$, $cs$)}{end}
+	\Titlea {
+		$crptIns$.add $si$ \;
+		\While{$cs$ \rm is not empty} {
+			$function$ $\leftarrow$ $cs$.pop \;
+			$ctrlDep$ $\leftarrow$ false \;
+			DoDetect($prog$, $si$, $function$, $ctrlDep$) \;
+		}
+	}
+	
+	\SetKwBlock{Titlea}{DoDetect($prog$, $si$, $function$, $ctrlDep$)}{end}
+	\Titlea {
+		set $localCrptBrs$ $\leftarrow$ empty \;
+		\ForEach {{\rm succeeded instruction $i$}} {
+			bool $ctrlDepFlag$ $\leftarrow$ false\;
+			\ForEach {{\rm branch instruction $cbr$ in $localCrptBrs$}} {
+				\If {$i$ \rm is control dependent on $cbr$} {
+					$ctrlDepFlag$ $\leftarrow$ true\;
+				}
+			}
+			\If {$ctrlDep$ \rm or $ctrlDepFlag$} {
+				\If {$i.$type() $\in$ $vuls$} {
+					ReportExploit($i$, CTRL\_DEP) \;
+				}
+			}
+			\If {$i$.isCall()} {
+				
+				\ForEach {{\rm actual argument $arg$ in $i$}} {
+					\If {$arg$ $\in$ $crptIns$} {
+						$crptIns$.add $i$ \;
+						\If {$i.$type() $\in$ $vuls$} {
+							ReportExploit($i$, DATA\_DEP) \;
+						}
+					}
+				}
+				\If {$f.$isInternal()} {
+					$cs$.push $f$ \;
+					DoDetect($prog$, $f.$first(), $f$, $ctrlDep$ or $ctrlDepFlag$) \;
+					$cs$.pop \;
+				}
+			} \Else {
+				\ForEach {{operand $op$ in $i$}} {
+					\If {$op$ $\in$ $crptIns$} {
+						\If {$i.$type() $\in$ $vuls$} {
+							ReportExploit($i$, DATA\_DEP) \;
+						}
+						$crptIns$.add $i$ \;
+						\If {$i.$isBranch()} {
+							$localCrptBrs$.add $i$\;     
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	\SetKwBlock{Titlea}{ReportExploit($i$, $type$)}{end}
+	\Titlea {
+		\If {$i$ \rm is never reported on $type$} {
+			ReportToDeveloper() \;
+		}
+	}
+	
+	\caption{Vulnerable input hint analysis}
+	\label{alg:analyzer}
+\end{algorithm}
+
+
+Algorithm~\ref{alg:analyzer} show \xxx's vulnerability analyzer's
+algorithm. It takes a program's LLVM bitcode in SSA form, an LLVM \v{load} 
+instruction that reads from the corrupted memory of a bug report, and the call 
+stack of this instruction. The algorithm then does inter-procedural static 
+analysis to see whether corrupted memory may propagate to any vulnerable 
+site (\S\ref{sec:patterns}) through data or control flows. If so, the algorithm 
+outputs the propagation chain in LLVM IR format as the vulnerable input hint 
+for developers.
+
+The algorithm works as follows. It first adds the corrupted read
+instruction into a global corrupted instruction set, it then traverses all
+following instructions in the current function and if any instruction is affected
+by this corrupted set (``affected" means any operand of current instruction
+is in this set), it adds the instruction into this corrupted set.
+The algorithm looks into all successors of branch instructions as well as
+callees to propagate this set. It reports a potential concurrency attack when a
+vulnerable site (\S\ref{sec:patterns}) is affected by this set.
+
+To achieve reasonable accuracy and scalability, we made three design decisions. 
+First, based on our finding that bugs and attacks often share similar call 
+stack prefixes, the algorithm traverses the bug's call stack 
+(\S\ref{sec:challenge}). If the algorithm does not find a vulnerability on 
+current call stack and its callees, it pops the latest caller in current call 
+stack and checks the propagation through the return value of this call, until 
+the call stack becomes empty and the traversal of current function finishes. 
+This targeted traversal makes the algorithm scale to large programs with 
+greatly reduced false reports (Table~\ref{tab:racefilter}).
+% The algorithm did 
+% not miss the evaluated attacks either (\S\ref{sec:known-attacks}).
+
+Second, the algorithm tracks propagation through LLVM virtual 
+registers~\cite{llvm}. Similar to relevant
+systems~\cite{conseq:asplos11,gist:sosp15}, our 
+design did not incorporate pointer analysis~\cite{bddbddb, dsa:pldi07} 
+because one main issue of such analysis is that it typically reports
+too many false positives on shared memory access in large programs
+(\S\ref{sec:limits}).
+
+Our analyzer compensates the lack of pointer analysis by:
+(1) tracking read instructions in the detectors at runtime 
+(\S\ref{sec:integration}), and (2) leveraging the call stacks to precisely 
+resolve the actually invoked function pointers (another main issue in pointer 
+analysis).
+
+Third, some detectors do not have read instructions in the reports (\eg, 
+write-write races), and we modified the detectors to add the first \v{load} 
+instruction for these reports during the detection runs 
+(\S\ref{sec:integration}).
+
+% Heming: TBD. This paragraph needs to go deeper to introduce the algorith 
+% rather than repeating the ideas of the algorithm (done in overview).
+% Our analyzer is designed to favor accuracy (\ie, reducing detector reports' 
+% false positives and false negatives) and scalability (\ie, being able to 
+% analyze large programs). To meet this design goal, our analyzer incorporates 
+% two pieces of runtime information, load instructions and their call stacks into 
+% our static analysis. Because the load instruction is indeed the starting point 
+% of reading corrupted memory (at least the structural pattern is corrupted), we 
+% make our static analysis focus on only the relevant propagation flows of the 
+% actual read instruction and we do not need to analyze the irrelevant ones, 
+% greatly improving accuracy and scalability. Because our analyzer also takes 
+% call stacks into account, we are able to precisely conduct the inter-procedural 
+% analysis (\eg, mitigating the ambiuity of function pointers). 
+
+All five types of vulnerability sites we found (\S\ref{sec:patterns}) have
+been incorporated in this algorithm. The generated vulnerability reaching branches
+from this algorithm serve as vulnerable input hints and helped us identify
+subtle inputs to detect \nknownVul known attacks and \nunknownVul previously
+unknown ones (\S\ref{sec:unknown-attacks}).
+
+\subsection{Find Potential Victims}
+
+\xxx's dynamic vulnerability verifier is built on \lldb so it is lightweight. 
+It takes the input from its static vulnerability analysis, including the 
+vulnerability site and the associated branches. It re-runs the program  again 
+and prints out whether one could reach the vulnerability site and trigger the 
+attack. If the site cannot be reached, it prints out the diverged branches as 
+further input hints.
+
+
+\subsection{Dynamic Vulnerability Verifier}
+
+\xxx has integrated two popular race detectors: \ski for
+Linux kernels and \tsan for application programs. To integrate \xxx's
+algorithm (\S\ref{sec:algo}) with concurrency bug detectors, two 
+elements are necessary from the detectors: the \v{load} instruction that reads 
+the bug's corrupted memory and the instruction's call stack.
+
+% How to work with diverse detection tools. How to parse the bug reports
+% from detection tools. How to parse call stacks and 
+% line numbers.
+
+% For SKI race detection hacking:
+\ski's default detection policy is inadequate to our tool because it only reports the
+pair of instructions at the moment when race happens. This policy incurs two
+issues for our integration. First, the pair of instructions could both be write
+instructions, which does not match the algorithm's input format. Second, it is
+essential to provide to the algorithm an as detailed call stack, which reads 
+from the corrupted racy variable, as possible.
+
+%TBD: where is the watching technique of \ski?
+We modified \ski's race detection policy as follows. After a race happens, the
+physical memory address of the variable will be added to a \ski watch list,
+marking such variable as corrupted. All the call stacks of the following read to
+the watched variable will be printed. If a write to a watched variable occurs,
+such write sanitizes the corrupt value and removes the variable from the watch
+list. In this way, we can catch all the call stacks of potential problematic 
+use of racy variables. The final race report will show all the stacks of the 
+reading thread.
+
+Another issue for \xxx to work with kernels is that \ski lacks call stack 
+information. We configure Linux kernel with the CONFIG\_FRAME\_POINTER option 
+enabled. Given a dump of the kernel stack and the values of the program counter 
+and frame pointer, we were able to iterate the stack frames and constructed call 
+stacks.
