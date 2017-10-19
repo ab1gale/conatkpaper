@@ -4,7 +4,7 @@
 %1. Interleaving - crash - explicit behaviour - 
 Multi-threaded program is hard to be correct. 
 Concurrency bugs are common in modern multi-threaded programs  
-including atomic violation, ..., and especially data race\cite{lu:concurrency-bugs,conmem:asplos10,conseq:asplos11, lu:muvi:sosp}.
+including atomic violation, order violation, and data race\cite{lu:concurrency-bugs,conmem:asplos10,conseq:asplos11, lu:muvi:sosp}.
 Extant work well explores interleaving that causes concurrency bugs, 
 and efficiently detects explicit concurrency bugs that direct to  
 severe consequences such as execution order violation, wrong output and program crash
@@ -16,12 +16,12 @@ severe consequences such as execution order violation, wrong output and program 
 Recent studies\cite{acidrain:sigmod17,con:hotpar12} show rise of concerns about \emph{concurrency attacks}.
 By triggering concurrency bugs, 
 hackers may leverage the corrupted memory to conduct  
-attacks including privilege escalations\cite{uselib-bug-12791,mysql-bug-14747}, hijacking code execution\cite{berend-jan-wever-msiexploit}, bypassing security checks\cite{xwindows,theotheriphone,theotheriphone-2011}, 
+attacks including privilege escalations\cite{uselib-bug-12791,mysql-bug-14747}, hijacking code execution\cite{msiexploit}, bypassing security checks\cite{cve-2008-0034,cve-2010-0923,cve-2010-1754}, 
 and breaking database integrity\cite{acidrain:sigmod17}.
 These vulnerabilities are often hidden in concurrency bugs and implicit regarding program behaviors. 
 For example, a privilege escalation attack may cause no outrageous effect, 
 but possess a permanent security hole hiding in the system.
-Also, despite the inputs that induce concurrency bugs, 
+Also, despite the subtle inputs that induce concurrency bugs, 
 concurrency attacks may need other crafted inputs for exploitation of the vulnerabilities. 
 
 
@@ -48,19 +48,19 @@ We studied \nattacks attacks and find two major challenges for detecting concurr
 First, concurrency attacks may be implicit and hidden in common concurrency bugs. 
 Existing concurrent bug detectors may not 
 analyze whether a concurrency bug is vulnerable and exploitable.  
-ConMem\cite{conmem:asplos10} first propose to 
-consider concurrency bugs that may cause severe consequences (\eg program crash), 
-but our observation shows that explicit error (\eg program crash) is not necessary for concurrency 
-attacks.
-ConSeq\cite{conseq:asplos11} care about severe consequences and do intra-procedure analysis to help diagnose concurrency bugs. 
-However, propagation path ... .
+%ConMem\cite{conmem:asplos10} first propose to 
+%consider concurrency bugs that may cause severe consequences (\eg program crash), 
+%but our observation shows that explicit error (\eg program crash) is not necessary for concurrency 
+%attacks.
+%ConSeq\cite{conseq:asplos11} care about severe consequences and do intra-procedure analysis to help diagnose concurrency bugs. 
+%However, propagation path ... .
 %Here the propagation path?
 %
-Worse still, crash bugs may even lead to more severe vulnerabilities. 
-In \emph{CVE-2017-7533} conducted by our team, although the data race primarily causes kernel crash, 
-we crafted the input and successfully conduct a privilege escalation attack without crashing the kernel.
-Current concurrency bug detecting tools are not designed to analyze this kind of latent vulnerabilities, 
-and hence may direct wrong level of warnings towards the bugs.  
+%Worse still, crash bugs may even lead to more severe vulnerabilities. 
+%In \emph{CVE-2017-7533} conducted by our team, although the data race primarily causes kernel crash, 
+%we crafted the input and successfully conduct a privilege escalation attack without crashing the kernel.
+%Current concurrency bug detecting tools are not designed to analyze this kind of latent vulnerabilities, 
+%and hence may direct wrong level of warnings towards the bugs.  
 
 
 Second, extant work ignores indicating extra inputs to conduct concurrency attacks.
@@ -93,7 +93,8 @@ The first phase is \emph{concurrency analyzer} to analyze bug-to-attack propagat
 We easily employ existing race detectors, and design a benign schedule reducer to reduce race reports(\S\ref{label}). 
 Then we 
 
-The second phase is \emph{concurrency fuzzer?} to ... .
+The second phase is \emph{concurrency fuzzer?} to indicate extra inputs for constructing a concurrency attack. 
+
 
 %9. Implementation / CVE . reduction
 We implemented \xxx on Linux, supporting both user space and kernel space attack detection. 
