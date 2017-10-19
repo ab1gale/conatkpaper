@@ -4,7 +4,7 @@
 %1. Interleaving - crash - explicit behaviour - 
 Multi-threaded program is hard to be correct. 
 Concurrency bugs are common in modern multi-threaded programs  
-including atomic violation, order violation, and data race\cite{lu:concurrency-bugs,conmem:asplos10,conseq:asplos11, lu:muvi:sosp}.
+including atomic violation, order violation, and others.
 Extant work well explores interleaving that causes concurrency bugs, 
 and efficiently detects explicit concurrency bugs that direct to  
 severe consequences such as execution order violation, wrong output and program crash
@@ -30,24 +30,26 @@ concurrency attacks may need other crafted inputs for exploitation of the vulner
 %   Our study - old bug - attack
 %   However in danger
 %   Sigmod 
-Unfortunately, although great progress has been made, there does not exist a general model and practical tools  
-for understanding and detecting concurrency attacks.
-???Our study over known concurrency 
-bugs\cite{apache-bug-25520, apache-bug-46215} shows that 
-even concurrency bugs have been successfully detected and reported, 
-professionals may still lack knowledge about how severe consequences these bugs may cause. 
-???For instance, \emph{apache-25520}\cite{apache-bug-25520} has been 
+Unfortunately, although great progress has been made, there does not exist a general model,
+as well as practical and automatic tools for understanding and detecting concurrency attacks. 
+Even some concurrency bugs has been detected and reported, 
+professional may still miss the potential vulnerabilities caused by the bug. 
+For instance, \emph{apache-25520}\cite{apache-bug-25520} has been 
 reported over years and well studied by researchers\cite{lu:concurrency-bugs}.  
-???We are the first to exploit a new heap overflow attack leveraging on this bug and break the HTML integrity. 
-Knowledge and detection of concurrency attacks is of crucial importance. 
+We are the first to exploit a new heap overflow attack leveraging on this bug and break the HTML integrity. 
+This is dangerous because attacks may have been already exploited in wild. 
+Hence, knowledge and detection of concurrency attacks is of crucial importance. 
 
 %4. Two major challenges : 
 %a. concurrent bug detectors (justify) 
 %b. other input for attack
-We studied \nattacks attacks and find two major challenges for detecting concurrency attacks. 
-First, concurrency attacks may be implicit and hidden in common concurrency bugs. 
-Existing concurrent bug detectors may not 
-analyze whether a concurrency bug is vulnerable and exploitable.  
+We studied \nattacks concurrency attacks and find two major challenges for detecting concurrency attacks. 
+First, it's hard to find the exact concurrency bug report which can conduct attack exploitation. 
+Concurrency attacks are hidden in huge amount concurrency bug reports. 
+For instance, a popular data race detector TSAN may generate xxx 
+race reports running Mysql's benchmark. However, 80\% is benign race 
+and only 6 of rest data races are vulnerable and conduct 1 concurrency attack. 
+Analyze whether a concurrency bug is vulnerable and exploitable.
 %ConMem\cite{conmem:asplos10} first propose to 
 %consider concurrency bugs that may cause severe consequences (\eg program crash), 
 %but our observation shows that explicit error (\eg program crash) is not necessary for concurrency 
@@ -80,7 +82,7 @@ To address the two challenges, we present a general model(\S\ref{sec:model})
 for understanding concurrency attacks.
 The model breaks down concurrency attacks into three stages: bug happening, 
 bug-to-attack propagation, and attack happening. In this model, 
-a concurrency bugs is triggered by bug-induced inputs and one input 
+a concurrency bugs is triggered by bug-induced inputs. 
 
 
 
@@ -98,6 +100,8 @@ The second phase is \emph{concurrency fuzzer?} to indicate extra inputs for cons
 
 %9. Implementation / CVE . reduction
 We implemented \xxx on Linux, supporting both user space and kernel space attack detection. 
+\xxx easily adopts servel race detectors including \tsan, \valgrind for user space and 
+\ktsan, \ski for kernel space. 
 
 
 
