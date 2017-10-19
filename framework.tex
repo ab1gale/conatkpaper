@@ -272,46 +272,14 @@ unknown ones (\S\ref{sec:unknown-attacks}).
 
 \subsection{Find Potential Victims}
 
+
+
+
+\subsection{Dynamic Vulnerability Verifier}
+
 \xxx's dynamic vulnerability verifier is built on \lldb so it is lightweight. 
 It takes the input from its static vulnerability analysis, including the 
 vulnerability site and the associated branches. It re-runs the program  again 
 and prints out whether one could reach the vulnerability site and trigger the 
 attack. If the site cannot be reached, it prints out the diverged branches as 
 further input hints.
-
-
-\subsection{Dynamic Vulnerability Verifier}
-
-\xxx has integrated two popular race detectors: \ski for
-Linux kernels and \tsan for application programs. To integrate \xxx's
-algorithm (\S\ref{sec:algo}) with concurrency bug detectors, two 
-elements are necessary from the detectors: the \v{load} instruction that reads 
-the bug's corrupted memory and the instruction's call stack.
-
-% How to work with diverse detection tools. How to parse the bug reports
-% from detection tools. How to parse call stacks and 
-% line numbers.
-
-% For SKI race detection hacking:
-\ski's default detection policy is inadequate to our tool because it only reports the
-pair of instructions at the moment when race happens. This policy incurs two
-issues for our integration. First, the pair of instructions could both be write
-instructions, which does not match the algorithm's input format. Second, it is
-essential to provide to the algorithm an as detailed call stack, which reads 
-from the corrupted racy variable, as possible.
-
-%TBD: where is the watching technique of \ski?
-We modified \ski's race detection policy as follows. After a race happens, the
-physical memory address of the variable will be added to a \ski watch list,
-marking such variable as corrupted. All the call stacks of the following read to
-the watched variable will be printed. If a write to a watched variable occurs,
-such write sanitizes the corrupt value and removes the variable from the watch
-list. In this way, we can catch all the call stacks of potential problematic 
-use of racy variables. The final race report will show all the stacks of the 
-reading thread.
-
-Another issue for \xxx to work with kernels is that \ski lacks call stack 
-information. We configure Linux kernel with the CONFIG\_FRAME\_POINTER option 
-enabled. Given a dump of the kernel stack and the values of the program counter 
-and frame pointer, we were able to iterate the stack frames and constructed call 
-stacks.
