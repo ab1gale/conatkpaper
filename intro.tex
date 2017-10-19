@@ -32,13 +32,13 @@ concurrency attacks may need other crafted inputs for exploitation of the vulner
 %   Sigmod 
 Unfortunately, although great progress has been made, there does not exist a general model and practical tools  
 for understanding and detecting concurrency attacks.
-Our study over known concurrency 
+???Our study over known concurrency 
 bugs\cite{apache-bug-25520, apache-bug-46215} shows that 
 even concurrency bugs have been successfully detected and reported, 
 professionals may still lack knowledge about how severe consequences these bugs may cause. 
-For instance, \emph{apache-25520}\cite{apache-bug-25520} has been 
+???For instance, \emph{apache-25520}\cite{apache-bug-25520} has been 
 reported over years and well studied by researchers\cite{lu:concurrency-bugs}.  
-We are the first to exploit a new heap overflow attack leveraging on this bug and break the HTML integrity. 
+???We are the first to exploit a new heap overflow attack leveraging on this bug and break the HTML integrity. 
 Knowledge and detection of concurrency attacks is of crucial importance. 
 
 %4. Two major challenges : 
@@ -80,7 +80,7 @@ To address the two challenges, we present a general model(\S\ref{sec:model})
 for understanding concurrency attacks.
 The model breaks down concurrency attacks into three stages: bug happening, 
 bug-to-attack propagation, and attack happening. In this model, 
-a concurrency bugs is triggered by two 
+a concurrency bugs is triggered by bug-induced inputs and one input 
 
 
 
