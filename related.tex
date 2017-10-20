@@ -42,7 +42,7 @@ model to reason about concurrency bugs and attacks.
 % Concurrency Reliability Tools
 \noindent
 \textbf{Concurrency reliability tools.} Various prior systems work
-on concurrency bug detection \cite{yu:racetrack:sosp,savage:eraser,racerx:sosp03,lu:muvi:sosp,avio:asplos06,conmem:asplos10,conseq:asplos11,kasikci2013racemob,wester:parallelizing:asplos13}, diagnosis \cite{racefuzzer:pldi08,ctrigger:asplos09,atomfuzzer:fse08,attariyan2012x,failure:sketch:sosp15}, and correction \cite{deadlock-immunity:osdi08,gadara:osdi08,wu:loom:osdi10,automated:osdi}. They focus on concurrency bugs themselves, while
+on concurrency bug detection \cite{yu:racetrack:sosp,savage:eraser,racerx:sosp03,lu:muvi:sosp,avio:asplos06,conmem:asplos10,conseq:asplos11,kasikci2013racemob,wester:parallelizing:asplos13,kasikci2015techniques}, diagnosis \cite{racefuzzer:pldi08,ctrigger:asplos09,kasikci2015techniques,atomfuzzer:fse08,attariyan2012x,failure:sketch:sosp15}, and correction \cite{deadlock-immunity:osdi08,gadara:osdi08,wu:loom:osdi10,automated:osdi}. They focus on concurrency bugs themselves, while
 OWL focuses on security related consequences of concurrency
 bugs. Therefore, these systems are complementary to OWL.
 
@@ -56,20 +56,20 @@ functions, thus Conseq is inadequate for concurrency attacks.
 Though, Conseq’s proactive harmful schedule exploration technique
 will be useful for OWL to trigger more vulnerable schedules.
 
-% Static Vulnerability Detection Tools
+% Static & Dynamic Vulnerability Detection Tools
 \noindent
-\textbf{Static vulnerability detection tools.} There are already a variety
-of static vulnerability detection approaches \cite{livshits05finding,yamaguchi2014modeling,felmetsger2010toward,felmetsger2010toward,srivastava2011security,zhang:usenix:sec02}, which fall into two categories based
+\textbf{Static \& Dynamic vulnerability detection tools.} There are already a variety
+of static and dynamic vulnerability detection approaches \cite{livshits05finding,yamaguchi2014modeling,felmetsger2010toward,felmetsger2010toward,srivastava2011security,zhang:usenix:sec02, paleari2008race}, which fall into two categories based
 on whether they target general or specific programs.
 
 The first category \cite{livshits05finding,yamaguchi2014modeling} targets general programs and
 these approaches have been shown to find severe vulnerabilities
-in large code. However, these pure static analyses may
+in large code. However, pure static or dynamic analyses may
 not be adequate to cope with concurrency attacks. Benjamin
 et al. \cite{livshits05finding} leverage pointer analysis to detect data flows from
 unchecked inputs to sensitive sites. This approach ignores
 control flow and thus it is not suitable to track concurrency
-attacks like the Libsafe one in §4.3\textbf{[TOCHECK]}. Yamaguchi et al. \cite{yamaguchi2014modeling}
+attacks like the Libsafe one in \textbf{[TOCHECK 4.3]}. Yamaguchi et al. \cite{yamaguchi2014modeling}
 did not incorporate inter-procedural analysis and thus is not
 suitable to track concurrency attacks either. Moreover, these
 general approaches are not designed to reason about concurrent
@@ -83,18 +83,22 @@ critical dynamic information (i.e., call stacks) into
 static analysis to enable comprehensive data-flow, control-
 flow, and inter-procedural analysis features.
 
-The second category \cite{felmetsger2010toward,arzt2014flowdroid,srivastava2011security,zhang:usenix:sec02} makes static analysis
+The second category \cite{felmetsger2010toward,arzt2014flowdroid,srivastava2011security,zhang:usenix:sec02,paleari2008race} makes analysis
 focused on specific behaviors (e.g., APIs) in specific programs
 to achieve scalability and accuracy. These approaches check
-web application logic \cite{felmetsger2010toward}, Android applications \cite{arzt2014flowdroid}, cross
+web application logic \cite{felmetsger2010toward} and interaction among scripts \cite{paleari2008race}, Android applications \cite{arzt2014flowdroid}, cross
 checking security APIs \cite{srivastava2011security}, and Linux Security
-Module \cite{zhang:usenix:sec02}. OWL’s analysis is complementary to these
+Module \cite{zhang:usenix:sec02}. Pure Dynamic approaches could reason about s specific execution path, but only the covered ones during execution observation. And they could not give semantic information upon the specific programs they are targeting \cite{paleari2008race}. OWL’s analysis is complementary to these
 approaches; OWL can be further integrated with these approaches
 to track concurrency attacks.
 
 % Symbolic Execution
 \noindent
-\textbf{Symbolic execution.} Symbolic execution is an advanced program
+\textbf{Scheduler Control and Symbolic execution.} Scheduler control 
+is a way to exploiting synchronization bugs by using interrupting and scheduling threads.
+AsyncShock \cite{weichbrodt2016asyncshock} is such a tool for thread manipulation. Scheduler control can be utilized by OWL to 
+find thread execution order of triggering concurrency attacks.
+Symbolic execution is an advanced program
 analysis technique that can systematically explore a program’s
 execution paths to find bugs. Researchers have built
 scalable and effective symbolic execution systems to detect
@@ -105,4 +109,3 @@ UCKLEE \cite{ramos2015under} has been shown to effectively detect hundreds
 of security vulnerabilities in widely used programs. Symbolic
 execution is orthogonal to OWL; it can augment OWL’s input
 hints by automatically generating concrete vulnerable inputs.
-
