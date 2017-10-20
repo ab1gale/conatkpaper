@@ -97,10 +97,9 @@ then developers can receive early warnings on concurrency attacks.
 In special case, 
 during data flow propagation, a buffer overflow may happen and additional threads' memory can be corrupted.  
 In traditional sequential attacks, attackers can leverage buffer overflow to construct attacks like 
-code hijacking, ... \cite{}. In concurrency situation, attackers can still conduct buffer overflow attack. 
-However, concurrency buffer overflow   
-Indicating the other inputs is key for the second challenge. 
-This model covers \nattacks concurrency attacks we studied. 
+code hijacking, ... \cite{}. In concurrency situation, attackers can still conduct buffer overflow attack.  
+However, indicating the other inputs is key for the second challenge.   
+In sum, this model covers \nattacks concurrency attacks we studied. 
 
 
 %6. Leveraging this model, framework - address two challenges.
@@ -130,8 +129,15 @@ vulnerable input hints.
 %Then we use a dynamic verifier to verify whether a race can really happen. 
 %After that, we do static analysis on the program 
 
-The second phase is \emph{concurrency fuzzer?} to provide another hint to 
+[TODO]The second phase is \emph{concurrency fuzzer?} to provide another hint to 
 indicate extra inputs for constructing a concurrency attack. 
+The key goal of this phase is to find the input playing the victim role of 
+concurrency attack. For instance, in CVE-2017-7533, we take a input that 
+act as victim. And construct a kernel heap overflow to corrupt the victim structure's 
+memory. By corrupting the memory, we successfully detected a arbitrary code 
+execution vulnerability. Usually, the victim structure appearing on the heap
+ is allocated with same memory allocation function. Hence we leverage this assumption, 
+ and indicate the victim inputs. 
  
 
 

@@ -6,13 +6,14 @@ Concurrency bugs in multi-threaded program is common and caused great loss in re
 Non-deadlock concurrency bugs includes 
 %includes data races\cite{datacollider:osdi10, savage:eraser, yu:racetrack:sosp}, 
 atomicity violations\cite{}, order violations\cite{} and others  has been well studied 
-by extant studies\cite{lu:concurrency-bugs,conmem:asplos10}. 
+by extant studies\cite{lu:concurrency-bugs,conmem:asplos10}. Data race is when two threads 
+access the same memory piece concurrently and at least one access is write.
 A extant work exclude data race as concurrency bug pattern 
 because data race does not certainly cause a concurrency bug\cite{lu:concurrency-bugs} and many data races are benign races. 
-However, our observation shows that data race is necessary for the attacks we studied, 
-although the bugs can be categorized to atomicity violation or order violation. 
+However, our observation shows that data race is necessary for the attacks we studied.  
+Concurrent bugs categorized to atomicity violation are also triggered by data races.
 And also, current race detectors can well readily detect the bug happening that causes attacks.
-
+What's more, extant industry 
 
  
 \subsection{Concurrency Attack}
