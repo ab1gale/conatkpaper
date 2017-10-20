@@ -2,21 +2,23 @@
 
 \subsection{Concurrency Bug}
 
-Concurrency bugs in multi-threaded program is common and caused great loss in real world. 
+% Sequential bug -- only input. Concurrency bug -- both input and 
+Concurrency bugs in multi-threaded program is common and caused great loss in real world\cite{}. 
 Non-deadlock concurrency bugs includes 
 %includes data races\cite{datacollider:osdi10, savage:eraser, yu:racetrack:sosp}, 
-atomicity violations\cite{}, order violations\cite{} and others  has been well studied 
-by extant studies\cite{lu:concurrency-bugs,conmem:asplos10}. Data race is when two threads 
+atomicity violations\cite{}, order violations\cite{} and others which has been well studied 
+by extant studies\cite{lu:concurrency-bugs,conmem:asplos10}. Data race is occurred when two threads 
 access the same memory piece concurrently and at least one access is write.
 A extant work exclude data race as concurrency bug pattern 
 because data race does not certainly cause a concurrency bug\cite{lu:concurrency-bugs} and many data races are benign races. 
 However, our observation shows that data race is necessary for the attacks we studied.  
 Concurrent bugs categorized to atomicity violation are also triggered by data races.
-And also, current race detectors can well readily detect the bug happening that causes attacks.
-What's more, extant industry 
+And also, current race detectors are popular in industry\cite{tsan,valgrind:pldi} and 
+readily detect the bug happening that causes attacks.  
 
  
 \subsection{Concurrency Attack}
+
 Extant studies \cite{con:hotpar12, acidrain:sigmod17} show rise of concurrency 
 attacks. We conclude two main features for concurrency attacks comparing to concurrency bugs. 
 First, concurrency attacks make much more severe threats:
@@ -27,8 +29,9 @@ bypassing security authentications\cite{cve-2010-0923, cve-2008-0034, cve-2010-1
 , and breaking database integrity\cite{acidrain:sigmod17}. 
 Concurrency attacks may do not cause 
 
-Current concurrency bug detection tools cannot well indicate whether a concurrency bug is vulnerable and exploitable.
-...Conseq, acid rain.
+Existing concurrency bug detection tools are not designed to indicate 
+whether a concurrency bug is vulnerable and exploitable.
+
 
 Second, concurrency bugs and attacks can often be easily
 triggered by crafted program inputs, and consequences may 
@@ -44,6 +47,11 @@ Current tools cannot successfully indicate ... .
 
 \subsection{Bug-to-Attack Propagation}
 
+In traditional sequential attacks, programmers 
+
+
+
+The program execution and path is 
 Mayhem\cite{mayhem:cmu} is the first to propose detection 
 exploitable attacks from sequential bugs. It employees a hybrid 
 approach of conclic and symbolic execution and achieves automatically 
