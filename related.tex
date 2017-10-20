@@ -94,7 +94,11 @@ to track concurrency attacks.
 
 % Symbolic Execution
 \noindent
-\textbf{Symbolic execution.} Symbolic execution is an advanced program
+\textbf{Scheduler Control and Symbolic execution.} Scheduler control 
+is a way to exploiting synchronization bugs by using interrupting and scheduling threads.
+AsyncShock \cite{weichbrodt2016asyncshock} is such a tool for thread manipulation. Scheduler control can be utilized by OWL to 
+find thread execution order of triggering concurrency attacks.
+Symbolic execution is an advanced program
 analysis technique that can systematically explore a program’s
 execution paths to find bugs. Researchers have built
 scalable and effective symbolic execution systems to detect
@@ -105,4 +109,3 @@ UCKLEE \cite{ramos2015under} has been shown to effectively detect hundreds
 of security vulnerabilities in widely used programs. Symbolic
 execution is orthogonal to OWL; it can augment OWL’s input
 hints by automatically generating concrete vulnerable inputs.
-
