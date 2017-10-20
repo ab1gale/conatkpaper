@@ -18,8 +18,9 @@ By triggering concurrency bugs,
 hackers may leverage the corrupted memory to conduct  
 attacks including privilege escalations\cite{uselib-bug-12791,mysql-bug-14747}, hijacking code execution\cite{msiexploit}, bypassing security checks\cite{cve-2008-0034,cve-2010-0923,cve-2010-1754}, 
 and breaking database integrity\cite{acidrain:sigmod17}.
-These vulnerabilities are often hidden in concurrency bugs and implicit regarding program behaviors. 
-For example, a privilege escalation attack may cause no outrageous effect, 
+These vulnerabilities are often hidden in huge amount of concurrency bugs and implicit in program behaviors. 
+Concurrency attacks are much more insidious and harmful than concurrency bugs. 
+A privilege escalation attack may cause no outrageous effect, 
 but possess a permanent security hole hiding in the system.
 Also, despite the subtle inputs that induce concurrency bugs, 
 concurrency attacks may need other crafted inputs for exploitation of the vulnerabilities. 
@@ -44,12 +45,15 @@ Hence, knowledge and detection of concurrency attacks is of crucial importance.
 %a. concurrent bug detectors (justify) 
 %b. other input for attack
 We studied \nattacks concurrency attacks and find two major challenges for detecting concurrency attacks. 
-First, it's hard to find the exact concurrency bug report which can conduct attack exploitation. 
+First, it's hard to distinguish the exact concurrency bug report which can conduct attack exploitation. 
 Concurrency attacks are hidden in huge amount concurrency bug reports. 
-For instance, a popular data race detector TSAN may generate xxx 
-race reports running Mysql's benchmark. However, 80\% is benign race 
-and only 6 of rest data races are vulnerable and conduct 1 concurrency attack. 
-Analyze whether a concurrency bug is vulnerable and exploitable.
+For instance, a popular data race detector \tsan generates 1123 
+race reports running \mysql's benchmark. However, 98\% reports are benign race 
+and only 2 of rest data races are vulnerable and finally conduct 2 concurrency attack. 
+Current concurrency bug detection tools are not designed to  
+analyze whether a concurrency bug is vulnerable and exploitable. 
+Hence developers need lots of efforts distinguishing and analyzing the reports given by concurrency bug detection tools. 
+In practice, this is not compatible with today's software development. 
 %ConMem\cite{conmem:asplos10} first propose to 
 %consider concurrency bugs that may cause severe consequences (\eg program crash), 
 %but our observation shows that explicit error (\eg program crash) is not necessary for concurrency 
@@ -66,10 +70,10 @@ Analyze whether a concurrency bug is vulnerable and exploitable.
 
 
 Second, extant work ignores indicating extra inputs to conduct concurrency attacks.
-A concurrency bug may become much more vulnerable when attackers 1.craft inputs that trigger the bug; 
-2.employee another input running on victim threads to construct their attacks. 
-In CVE-2017-7533, we do not only leverage two crafted inputs running on two threads to trigger a data race and construct kernel heap overflow, 
-but also require another inputs running on \emph{victim thread} to lay the target structure on the same heap. 
+A concurrency bug may become much more vulnerable when attackers 1.craft inputs to trigger the bug; 
+2.employee other inputs running to construct their attacks. 
+In CVE-2017-7533, we first leverage two crafted inputs running on two threads to trigger a data race and construct kernel heap overflow. 
+We also require another inputs running on \emph{victim thread} to lay the target structure on the same heap. 
 By corrupting the target structure, we finally achieve arbitrary code execution and get a root shell. 
 Automatically indicating the inputs that construct concurrency attacks 
 would be of vital helpful for developers to better understand the latent vulnerabilities.
@@ -81,37 +85,66 @@ would be of vital helpful for developers to better understand the latent vulnera
 To address the two challenges, we present a general model(\S\ref{sec:model}) 
 for understanding concurrency attacks.
 The model breaks down concurrency attacks into three stages: bug happening, 
-bug-to-attack propagation, and attack happening. In this model, 
-a concurrency bugs is triggered by bug-induced inputs. 
+bug-to-attack propagation, and attack happening. 
+In this model, 
+a concurrency bugs is triggered by bug-induced inputs. Then corrupted memory 
+propagates through control flow and data flow of program execution. 
+When corrupted memory propagates to vulnerable sites, a concurrency attack may be exploitable. 
+This procedure addresses the first challenge. If we can provide hints for verified concurrency bug happening, 
+and bug-to-attack propagation analysis, 
+then developers can receive early warnings on concurrency attacks.
 
+In special case, 
+during data flow propagation, a buffer overflow may happen and additional threads' memory can be corrupted.  
+In traditional sequential attacks, attackers can leverage buffer overflow to construct attacks like 
+code hijacking, ... \cite{}. In concurrency situation, attackers can still conduct buffer overflow attack. 
+However, concurrency buffer overflow   
+Indicating the other inputs is key for the second challenge. 
+This model covers \nattacks concurrency attacks we studied. 
 
 
 %6. Leveraging this model, framework - address two challenges.
-Leveraging this model, we designed a practical, scalable and inter-procedural concurrency 
+Leveraging the model, we designed a practical, scalable and inter-procedural concurrency 
 attack detection framework(\S\ref{sec:archi}), \xxx. 
 The framework contain two phases.
 %7. Two phase. 
-The first phase is \emph{concurrency analyzer} to analyze bug-to-attack propagations. 
-We easily employ existing race detectors, and design a benign schedule reducer to reduce race reports(\S\ref{label}). 
-Then we 
+The first phase is \emph{concurrency analyzer} to detect concurrency attacks, 
+which augment current concurrency bug detectors.  
+We provide two extra hints for explore concurrency attacks.
+One hint is the benign schedules. The benign reports caused by adhoc
+synchronizations have already implied how these synchronizations
+act and how they work out schedules. Therefore, we
+can use static analysis to extract these synchronizations from
+the reports, automatically annotate these synchronizations in
+a program, then we can greatly prune out these benign schedules
+and their reports. The other hint is the bug-to-attack propagations, which
+imply vulnerable inputs. Our study found that most vulnerable
+races are already included in the race detectors’ reports
+(\S\ref{label}), and concurrency attacks sites are often explicit in program
+code (\S\ref{label}). Therefore, we can perform static analysis
+on only the data and control flow propagations between the
+bug reports and the potential attack sites, then we can collect
+relevant call stacks and branch statements as the potentially
+vulnerable input hints.
+%We easily employ existing race detectors, and design a benign schedule reducer to reduce race reports(\S\ref{label}). 
+%Then we use a dynamic verifier to verify whether a race can really happen. 
+%After that, we do static analysis on the program 
 
-The second phase is \emph{concurrency fuzzer?} to indicate extra inputs for constructing a concurrency attack. 
+The second phase is \emph{concurrency fuzzer?} to provide another hint to 
+indicate extra inputs for constructing a concurrency attack. 
+ 
 
 
 %9. Implementation / CVE . reduction
-We implemented \xxx on Linux, supporting both user space and kernel space attack detection. 
-\xxx easily adopts servel race detectors including \tsan, \valgrind for user space and 
-\ktsan, \ski for kernel space. 
-
-
-
-We evaluated OWL on 6 diverse, widely used programs, including Apache, Chrome, Libsafe, Linux kernel, MySQL,
-and SSDB. OWL’s benign schedule hints and runtime verifiers reduced 94.3\% of the race reports, 
+We implemented \xxx on Linux, supporting both user space and kernel space concurrency attack detection. 
+\xxx adopts several race detectors including \tsan, \valgrind for user space and 
+\ktsan, \ski for kernel space. We evaluated \xxx on 6 diverse, widely used programs, including \apache, \chrome, \libsafe, \linux, \mysql,
+and \ssdb. \xxx’s benign schedule hints and runtime verifiers reduced 94.3\% of the race reports, 
 and it did not miss the evaluated concurrency attacks. With the greatly reduced reports,
-OWL’s vulnerable input hints helped us identify subtle
+\xxx’s vulnerable input hints helped us identify subtle
 vulnerable inputs, leading to the detection of 7 known concurrency
-attacks as well as 3 previous unknown, severe ones
-in SSDB and Apache. The analysis performance of OWL was
+attacks as well as 4 previous unknown, severe ones
+in \ssdb and \apache. The analysis performance of \xxx was
 reasonable for in-house testing.
 
 
@@ -124,7 +157,7 @@ This paper makes two major contributions:
 This model explains most concurrency attacks in wild and 
 providing two major direction for detecting concurrency attacks. 
 	
-\item \textbf{A practical concurrency attack detection tool and its implementation, \xxx.} 
+\item \textbf{A practical concurrency attack detection framework and its implementation, \xxx.} 
 \xxx can easily employ existing concurrent bug detectors and vulnerability analyzer 
 to improve the accuracy and ??? of detection.
 	
@@ -136,7 +169,11 @@ to improve the accuracy and ??? of detection.
 The rest of this paper is structured as follows. 
 \S\ref{sec:background} introduces the background of concurrency attacks.
 \S\ref{sec:overview} gives an overview on the concurrency attack model and architecture of \xxx.
-\S\ref{}...
+\S\ref{sec:framework} describes the design of \xxx. 
+\S\ref{sec:implementation} states the implementation of \xxx.
+In \S\ref{sec:discuss}, we discuss our limitations and future work. 
+We evaluated \xxx and show results in \S\ref{sec:evaluation}.
+We talk about related work in \S\ref{sec:related} and make a conclusion in \S\ref{sec:conclusion}.
 
 
 
