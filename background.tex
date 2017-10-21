@@ -6,7 +6,6 @@
 In multi-threaded program, concurrency bugs (unsynchronized memory access) is common and caused great loss in real world\cite{nasdaq, therac}.  
 %Non-deadlock concurrency bugs includes 
 %includes data races\cite{datacollider:osdi10, savage:eraser, yu:racetrack:sosp}, 
-
 %atomicity violations\cite{}, order violations\cite{} and others which has been well studied 
 %by extant studies\cite{lu:concurrency-bugs,conmem:asplos10}. 
 Data race is a significant leading factor of concurrency bug and occurred when two threads 
@@ -41,29 +40,27 @@ bypassing security authentications\cite{cve-2010-0923, cve-2008-0034, cve-2010-1
 Second, concurrency bugs and attacks can often be easily
 triggered by crafted program inputs, and consequences may 
 become much more severe when attacks involves extra inputs.  
-For instance, attackers
-can use inputs to control the physical timings of disk
-IO and program loops and trigger concurrency bugs with a
-small number of re-executions. 
-
 Existing concurrency bug detection tools are not designed to indicate 
 whether a concurrency bug is vulnerable and exploitable.
 
 
 \subsection{Bug-to-Attack Propagation}
 
-In traditional sequential attacks, bugs are triggered by certain input
-
-The program execution and path is 
-Mayhem\cite{mayhem:cmu} is the first to propose detection 
-exploitable attacks from sequential bugs. It employees a hybrid 
-approach of conclic and symbolic execution and achieves automatically 
+In traditional sequential context, attacks are triggered by certain inputs. 
+Program path and execution order is often 
+determined once input is given. 
+In concurrency context, attacks are triggered by both input and interleaving\cite{con-bugs,con:hotpar12}. 
+%The program execution and path is
+There has been tools to analyze sequential attacks. 
+They often trace the input and do program path analysis. 
+For instance, mayhem\cite{mayhem:cmu} is the first to propose detecting 
+sequential attacks and automatically generating exploit scripts, which has made great progress. 
+It employees a hybrid 
+approach of concrete and symbolic execution and achieves automatically 
 exploiting vulnerabilities. 
 
-However, concurrency bugs is different from sequential bugs. 
-First, concurrency bugs is triggered randomly and ... .
-Second...
-
+However, conventional sequential approach is not suitable in concurrency context. 
+We conclude in two points. First,  
 
 
 

@@ -3,7 +3,7 @@ understand these attacks. Compared with concurrent bugs, concurrent attacks are 
 This paper finds two challenges for detecting concurrency attacks and presents a general model with a practical framework for understanding and detecting concurrency bugs -- OWL.
 
 Our study on 10 widely used programs reveals 26 concurrency attacks
-with broad threats (e.g., OS privilege escalation), and we built
+with broad threats (\eg, OS privilege escalation), and we built
 scripts to successfully exploit 10 attacks. Our study further reveals
 that, only extremely small portions of inputs and thread
 interleaving (or schedules) can trigger these attacks, and existing
@@ -11,13 +11,13 @@ concurrency bug detectors work poorly because they
 lack help to identify the vulnerable inputs and schedules.
 
 Our key insight is that the reports in existing detectors have
-implied moderate hints on what inputs and schedules will be likely to lead to attacks and what will not (e.g., benign bug reports).
+implied moderate hints on what inputs and schedules will be likely to lead to attacks and what will not (\eg, benign bug reports).
 With this insight, OWL extracts hints from the reports with static analysis, augments existing detectors by pruning out the benign inputs
 and schedules, directs detectors with its own runtime
 vulnerability verifiers to work on the remaining, likely
 vulnerable inputs and schedules, and finally give possible inputs based on fuzzer triggering concurrency attacks by exploiting the concurrency bug.
 
-Evaluation shows that OWL reduced 94.3% reports caused
+Evaluation shows that OWL reduced 94.3\% reports caused
 by benign inputs or schedules and detected 7 known concurrency
 attacks. OWL also detected 3 previously unknown
 concurrency attacks, including a use-after-free attack in SSDB
