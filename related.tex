@@ -15,14 +15,14 @@ mainly causes illegal file access, while concurrency attacks
 can cause a much broader range of security vulnerabilities,
 ranging from gaining root privileges \cite{uselib-bug-12791} , injecting malicious
 code \cite{freebsdcve}, to corrupting critical memory \cite{apache-bug-25520}. Second, concurrency
-attacks stem from miscellaneous kinds of memory access, and
+attacks stem from miscellaneous kinds of memory access, while
 TOCTTOU stem from file accesses, thus handling concurrency
 attacks is much more difficult than TOCTTOU.
 
 Another prior study \cite{concurrency:woot07} further
-defined two more kinds of vulnerabilities: One is \textbf{TOATTOU}(Time-Of-Check-to-Time-Of-Use),
+defined two more kinds of vulnerabilities: One is \textbf{TOATTOU}(Time-Of-Audit-to-Time-Of-Use),
 in which the audit log diverges due to non-atomicity so that attackers could mask activities to avoid IDS triggering; 
-The other is \textbf{TORTTOU}(Time-Of-Check-to-Time-Of-Use), unique to system call wrappers, in which attackers could 
+The other is \textbf{TORTTOU}(Time-Of-Replace-to-Time-Of-Use), unique to system call wrappers, in which attackers could 
 modify system call arguments after the wrapper has replaced the arguments but before the kernel accesses them.
 
 % Sequential Security Techniques
@@ -69,7 +69,7 @@ not be adequate to cope with concurrency attacks. Benjamin
 et al. \cite{livshits05finding} leverage pointer analysis to detect data flows from
 unchecked inputs to sensitive sites. This approach ignores
 control flow and thus it is not suitable to track concurrency
-attacks like the Libsafe one in \textbf{[TOCHECK 4.3]}. Yamaguchi et al. \cite{yamaguchi2014modeling}
+attacks like the Libsafe one in \textbf{[TBC - 4.3]}. Yamaguchi et al. \cite{yamaguchi2014modeling}
 did not incorporate inter-procedural analysis and thus is not
 suitable to track concurrency attacks either. Moreover, these
 general approaches are not designed to reason about concurrent
@@ -83,7 +83,7 @@ critical dynamic information (i.e., call stacks) into
 static analysis to enable comprehensive data-flow, control-
 flow, and inter-procedural analysis features.
 
-The second category \cite{felmetsger2010toward,arzt2014flowdroid,srivastava2011security,zhang:usenix:sec02,paleari2008race} makes analysis
+The second category \cite{felmetsger2010toward,arzt2014flowdroid,srivastava2011security,zhang:usenix:sec02,paleari2008race,pratikakis2011locksmith} makes analysis
 focused on specific behaviors (e.g., APIs) in specific programs
 to achieve scalability and accuracy. These approaches check
 web application logic \cite{felmetsger2010toward} and interaction among scripts \cite{paleari2008race}, Android applications \cite{arzt2014flowdroid}, cross

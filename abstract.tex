@@ -1,11 +1,11 @@
-Just like sequential bugs lead to attacks, concurrency bugs also lead to concurrency attacks. There're various tools working on concurrency bug detection, diagnosis, and correction. Unfortunately, existing tools could not efficiently detect and help 
-understand these attacks. Compared with concurrent bugs, concurrent attacks are more severe since they may have already been exploited by attackers, though concurrency bugs have been fixed. 
+Just like sequential bugs lead to attacks, concurrency bugs also lead to concurrency attacks. There are various tools working on concurrency bug detection, diagnosis, and correction. Unfortunately, existing tools could not efficiently detect and help 
+understand these attacks. Compared with concurrency bugs, concurrency attacks are more severe since they may have already been exploited by attackers, though concurrency bugs have been fixed. 
 This paper finds two challenges for detecting concurrency attacks and presents a general model with a practical framework for understanding and detecting concurrency bugs -- OWL.
 
 Our study on 10 widely used programs reveals 26 concurrency attacks
 with broad threats (\eg, OS privilege escalation), and we built
 scripts to successfully exploit 10 attacks. Our study further reveals
-that, only extremely small portions of inputs and thread
+that, only extremely small portion of inputs and thread
 interleaving (or schedules) can trigger these attacks, and existing
 concurrency bug detectors work poorly because they
 lack help to identify the vulnerable inputs and schedules.
@@ -14,14 +14,14 @@ Our key insight is that the reports in existing detectors have
 implied moderate hints on what inputs and schedules will be likely to lead to attacks and what will not (\eg, benign bug reports).
 With this insight, OWL extracts hints from the reports with static analysis, augments existing detectors by pruning out the benign inputs
 and schedules, directs detectors with its own runtime
-vulnerability verifiers to work on the remaining, likely
+vulnerability verifiers to work on the remaining likely
 vulnerable inputs and schedules, and finally give possible inputs based on fuzzer triggering concurrency attacks by exploiting the concurrency bug.
 
 Evaluation shows that OWL reduced 94.3\% reports caused
 by benign inputs or schedules and detected 7 known concurrency
 attacks. OWL also detected 3 previously unknown
 concurrency attacks, including a use-after-free attack in SSDB
-confirmed as CVE-2016-1000324, an integer overflow ,
+confirmed as CVE-2016-1000324, an integer overflow,
 HTML integrity violation in Apache and three new MySQL
 data races confirmed with bug ID 84064, 84122, 84241. All
 OWL source code, exploit scripts, and results are available at
