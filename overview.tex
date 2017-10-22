@@ -81,10 +81,9 @@ precise and scalable vulnerability reports and input hints.
 that can be corrupted by intra-procedural propagation(\eg, heap overflow). It receives 
 hints from intro-procedural static analyzer, target program executables and crowd-sourced 
 benchmarks. It produces hints for potential victim inputs. 
-   
-  
-
-  
+     
 
 \subsection{Detecting Example}\label{sec:example}
 
+We take our exploitation of CVE-2017-7533 as a example of using our framework to produce hints for concurrency attack. 
+When we running an inotify and rename concurrently, a race report of  
