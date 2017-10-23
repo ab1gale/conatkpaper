@@ -2,12 +2,9 @@
 
 
 %1. Interleaving - crash - explicit behaviour - 
-Multi-threaded program is hard to be correct. 
-Concurrency bugs are common in modern multi-threaded programs  
-including atomic violation, order violation, and others.
-Extant work well explores interleaving that causes concurrency bugs, 
-and efficiently detects explicit concurrency bugs that direct to  
-severe consequences such as execution order violation, wrong output and program crash
+Multi-threaded programs are hard to be correct. 
+Concurrency bugs, including atomic violation, order violation, etc, are common in modern multi-threaded programs.
+Extant works well explore mechanism of concurrency bug detectors, generation of interleavings that trigger concurrency bugs, and detecting bugs that explicitly cause execution order violation, wrong output and program crash
 \cite{wu2015:collaborative,tsan,valgrind:pldi,lu:muvi:sosp,conseq:asplos11,conmem:asplos10}.
 %and by employing memory sanitizers and thread sanitizers, severe concurrency bugs
 %may be explicit(?..).
@@ -15,15 +12,15 @@ severe consequences such as execution order violation, wrong output and program 
 %2. Recent study - con attacks - structural , consequence, [in-explicit severer]
 Recent studies\cite{acidrain:sigmod17,con:hotpar12} show rise of concerns about \emph{concurrency attacks}.
 By triggering concurrency bugs, 
-hackers may leverage the corrupted memory to conduct  
+hackers may corrupt memory, and leverage the corrupted memory to conduct  
 attacks including privilege escalations\cite{uselib-bug-12791,mysql-bug-14747}, hijacking code execution\cite{msiexploit}, bypassing security checks\cite{cve-2008-0034,cve-2010-0923,cve-2010-1754}, 
 and breaking database integrity\cite{acidrain:sigmod17}.
-These vulnerabilities are often hidden in huge amount of concurrency bugs and implicit in program behaviors. 
-Concurrency attacks are much more insidious and harmful than concurrency bugs. 
-A privilege escalation attack may cause no outrageous effect, 
-but possess a permanent security hole hiding in the system.
-Also, despite the subtle inputs that induce concurrency bugs, 
-concurrency attacks may need other crafted inputs for exploitation of the vulnerabilities. 
+These attack-causing bugs are often hidden in huge amount of concurrency bugs and cannot be easily distinguished. 
+Concurrency attacks are cause by exploitable and harmful concurrency bugs, and will result in much more severe consequence than non-attack-causing bugs. 
+A privilege escalation attack may run in background, drawing little attention of system administrator, 
+but leave a permanent shell or backdoor hiding in the system, thus cause a long-term damage to security.
+Also, beside knowing which subtle inputs can induce concurrency bugs, 
+we also need to decide what  crafted inputs are needed for exploitation of concurrency bugs and launch of concurrency attacks. 
 
 
 
